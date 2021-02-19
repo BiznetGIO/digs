@@ -78,3 +78,15 @@ fn query() {
         .success()
         .stdout(predicate::str::contains("184.216.34"));
 }
+
+// should fallback to A
+#[test]
+fn query_without_rtype() {
+    let mut cmd = Command::cargo_bin("digs").unwrap();
+    cmd.arg("example.net")
+        .arg("-f")
+        .arg("tests/fixture/digs.toml");
+    cmd.assert()
+        .success()
+        .stdout(predicate::str::contains("184.216.34"));
+}
