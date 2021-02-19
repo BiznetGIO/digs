@@ -110,6 +110,7 @@ jobs:
           file: target/${{ matrix.target }}/release/${{ matrix.artifact_name }}
           asset_name: ${{ matrix.asset_name }}
           tag: ${{ github.ref }}
+          overwrite: true
 
       - name: Upload binaries to release
         if: matrix.build == 'win-msvc' || matrix.build == 'win-gnu'
@@ -119,3 +120,4 @@ jobs:
           file: target/release/${{ matrix.artifact_name }}
           asset_name: ${{ matrix.asset_name }}
           tag: ${{ github.ref }}
+          overwrite: true
