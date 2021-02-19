@@ -6,9 +6,12 @@ dig many at once.
 <a href="https://github.com/azzamsa/digs.rs/actions/workflows/ci.yml">
 <img src="https://github.com/azzamsa/digs.rs/workflows/ci/badge.svg">
 </a>
-</div>
+
+<p></p>
 
 ![A digs demo](docs/demo.gif)
+
+</div>
 
 ---
 
