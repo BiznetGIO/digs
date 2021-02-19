@@ -57,6 +57,17 @@ fn rtype_too_many() {
 }
 
 #[test]
+fn address_invalid() {
+    let mut cmd = Command::cargo_bin("digs").unwrap();
+    cmd.arg("example.net")
+        .arg("-f")
+        .arg("tests/fixture/invalid-address.toml");
+    cmd.assert()
+        .failure()
+        .stderr(predicate::str::contains("Invalid addres"));
+}
+
+#[test]
 fn query() {
     let mut cmd = Command::cargo_bin("digs").unwrap();
     cmd.arg("example.net")

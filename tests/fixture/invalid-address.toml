@@ -1,0 +1,8 @@
+[[servers]]
+# invalid address
+ip = "8.8.8"
+name = "Google"
+
+[[servers]]
+ip = "9.9.9.9"
+name = "Quad9"
