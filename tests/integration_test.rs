@@ -68,6 +68,17 @@ fn address_invalid() {
 }
 
 #[test]
+fn domain_invalid() {
+    let mut cmd = Command::cargo_bin("digs").unwrap();
+    cmd.arg("example")
+        .arg("-f")
+        .arg("tests/fixture/invalid-address.toml");
+    cmd.assert()
+        .failure()
+        .stderr(predicate::str::contains("Invalid domain name"));
+}
+
+#[test]
 fn query() {
     let mut cmd = Command::cargo_bin("digs").unwrap();
     cmd.arg("example.net")
