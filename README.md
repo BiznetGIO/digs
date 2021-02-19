@@ -3,7 +3,9 @@
 
 dig many at once.
 
-<a href=""><img src=""></a>
+<a href="https://github.com/azzamsa/digs.rs/actions/workflows/ci.yml">
+<img src="https://github.com/azzamsa/digs.rs/workflows/ci/badge.svg">
+</a>
 </div>
 
 ![A digs demo](docs/demo.gif)

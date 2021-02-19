@@ -1,0 +1,78 @@
+name: ci
+
+on:
+  pull_request:
+  push:
+    branches:
+    - master
+
+jobs:
+  test:
+    name: test
+    env:
+      CARGO: cargo
+      TARGET_DIR: ./target
+      # Emit backtraces on panics.
+      RUST_BACKTRACE: 1
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        build:
+          # We only use rust stable
+          - stable
+        include:
+        - build: stable
+          os: ubuntu-18.04
+          rust: stable
+        - build: macos
+          os: macos-latest
+          rust: stable
+        - build: win-msvc
+          os: windows-2019
+          rust: stable
+        - build: win-gnu
+          os: windows-2019
+          rust: stable
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Install Rust
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: ${{ matrix.rust }}
+          profile: minimal
+          override: true
+
+      - name: Show command used for Cargo
+        run: |
+          echo "cargo command is: ${{ env.CARGO }}"
+          echo "target flag is: ${{ env.TARGET_FLAGS }}"
+
+      - name: Build digs
+        run: ${{ env.CARGO }} build --verbose --all ${{ env.TARGET_FLAGS }}
+
+      - name: Run tests
+        if: matrix.target != ''
+        run: ${{ env.CARGO }} test --verbose --all ${{ env.TARGET_FLAGS }}
+
+
+
+  rustfmt:
+    name: rustfmt
+    runs-on: ubuntu-18.04
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Install Rust
+      uses: actions-rs/toolchain@v1
+      with:
+        toolchain: stable
+        override: true
+        profile: minimal
+        components: rustfmt
+
+    - name: Check formatting
+      run: |
+        cargo fmt --all -- --check
