@@ -2,7 +2,7 @@
 name = "digs"
 description = "digs many at once"
 version = "0.1.1"
-authors = ["azzamsa <me@azzamsa.com>"]
+authors = ["azzamsa <azzam@biznetgio.com>"]
 categories = ["command-line-utilities"]
 edition = "2018"
 license = "GPLv3"

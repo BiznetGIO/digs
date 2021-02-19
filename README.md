@@ -3,8 +3,8 @@
 
 dig many at once.
 
-<a href="https://github.com/azzamsa/digs.rs/actions/workflows/ci.yml">
-<img src="https://github.com/azzamsa/digs.rs/workflows/ci/badge.svg">
+<a href="https://github.com/BiznetGIO/digs/actions/workflows/ci.yml">
+<img src="https://github.com/BiznetGIO/digs/workflows/ci/badge.svg">
 </a>
 
 <p></p>
@@ -54,7 +54,7 @@ Run `digs --help` to see more available options.
 
 ### Binary releases
 
-Download the binary from the [release page](https://github.com/azzamsa/digs.rs/releases)
+Download the binary from the [release page](https://github.com/BiznetGIO/digs/releases)
 
 ### With cargo (from source)
 

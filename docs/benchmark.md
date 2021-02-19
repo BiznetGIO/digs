@@ -59,7 +59,7 @@ App location:
 ``` bash
 ~
 ❯ which digs
-/home/azzamsya/.cargo/bin/digs
+/home/user/.cargo/bin/digs
 ```
 
 Try:
