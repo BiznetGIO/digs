@@ -51,11 +51,7 @@ Run `digs --help` to see more available options.
 
 ### Binary releases
 
-Download the binary from the [release page]()
-Available binaries:
-
-- *Nix
-- Window PC
+Download the binary from the [release page](https://github.com/azzamsa/digs.rs/releases)
 
 ### With cargo (from source)
 

@@ -5,37 +5,35 @@ on:
   push:
     branches:
     - master
+  schedule:
+    - cron: '00 01 * * *'
 
 jobs:
   test:
     name: test
     env:
       CARGO: cargo
+      # When CARGO is set to CROSS, this is set to `--target matrix.target`.
+      TARGET_FLAGS:
+      # When CARGO is set to CROSS, TARGET_DIR includes matrix.target.
       TARGET_DIR: ./target
       # Emit backtraces on panics.
       RUST_BACKTRACE: 1
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        build:
-          # We only use rust stable
-          - stable
+        build: [linux, linux-musl, macos, win-msvc, win-gnu]
         include:
-        - build: stable
-          os: ubuntu-18.04
-          rust: stable
-        - build: macos
-          os: macos-latest
-          rust: stable
-        - build: win-msvc
-          os: windows-2019
-          rust: stable
-        - build: win-gnu
-          os: windows-2019
-          rust: stable
+        - { build: linux , os: ubuntu-18.04 , rust: stable, target: x86_64-unknown-linux-gnu }
+        - { build: linux-musl , os: ubuntu-18.04 , rust: stable, target: x86_64-unknown-linux-musl}
+        - { build: macos , os: macos-latest , rust: stable, target: x86_64-apple-darwin}
+        - { build: win-msvc , os: windows-2019 , rust: stable, target: x86_64-pc-windows-msvc}
+        - { build: win-gnu , os: windows-2019 , rust: stable, target: x86_64-pc-windows-gnu}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
+        with:
+          fetch-depth: 1
 
       - name: Install Rust
         uses: actions-rs/toolchain@v1
@@ -43,6 +41,14 @@ jobs:
           toolchain: ${{ matrix.rust }}
           profile: minimal
           override: true
+
+      - name: Use Cross
+        if: matrix.target != ''
+        run: |
+          cargo install cross
+          echo "CARGO=cross" >> $GITHUB_ENV
+          echo "TARGET_FLAGS=--target ${{ matrix.target }}" >> $GITHUB_ENV
+          echo "TARGET_DIR=./target/${{ matrix.target }}" >> $GITHUB_ENV
 
       - name: Show command used for Cargo
         run: |
@@ -64,6 +70,8 @@ jobs:
     steps:
     - name: Checkout repository
       uses: actions/checkout@v2
+      with:
+          fetch-depth: 1
 
     - name: Install Rust
       uses: actions-rs/toolchain@v1
