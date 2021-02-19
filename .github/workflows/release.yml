@@ -97,11 +97,6 @@ jobs:
         run: |
           strip "target/${{ matrix.target }}/release/digs"
 
-      - name: debug file name
-        if: matrix.build == 'win-msvc' || matrix.build == 'win-gnu' 
-        run: |
-          dir target/release
-
       - name: Upload binaries to release
         if: matrix.build == 'linux' || matrix.build == 'linux-musl' || matrix.build == 'macos'
         uses: svenstaro/upload-release-action@v1-release
