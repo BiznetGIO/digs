@@ -25,7 +25,7 @@ fn main() {
         )
         .arg(
             Arg::new("rtype")
-                .possible_values(&["A", "AAAA", "MX", "NS", "SOA", "TXT"])
+                .possible_values(&["A", "AAAA", "CNAME", "MX", "NS", "SOA", "TXT"])
                 .default_value("A"),
         )
         .arg(
