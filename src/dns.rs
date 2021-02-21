@@ -5,11 +5,12 @@ use trust_dns_client::op::DnsResponse;
 use trust_dns_client::rr::{DNSClass, Name, RecordType};
 use trust_dns_client::udp::UdpClientConnection;
 
-// Record Types
+/// Record Types
 #[derive(Debug, Clone, Copy)]
 pub enum RTypes {
     A,
     AAAA,
+    CNAME,
     MX,
     NS,
     SOA,
@@ -23,6 +24,7 @@ impl FromStr for RTypes {
         match s {
             "A" => Ok(RTypes::A),
             "AAAA" => Ok(RTypes::AAAA),
+            "CNAME" => Ok(RTypes::CNAME),
             "MX" => Ok(RTypes::MX),
             "NS" => Ok(RTypes::NS),
             "SOA" => Ok(RTypes::SOA),
@@ -36,13 +38,15 @@ fn get_rtype(rtype: RTypes) -> RecordType {
     match rtype {
         RTypes::A => RecordType::A,
         RTypes::AAAA => RecordType::AAAA,
+        RTypes::CNAME => RecordType::CNAME,
         RTypes::MX => RecordType::MX,
         RTypes::NS => RecordType::NS,
         RTypes::SOA => RecordType::SOA,
         RTypes::TXT => RecordType::TXT,
     }
 }
-// Parse address string
+
+/// Parse address string
 fn get_address(nameserver: &str) -> std::net::SocketAddr {
     let address = format!("{}:53", nameserver).parse::<std::net::SocketAddr>();
     match address {
