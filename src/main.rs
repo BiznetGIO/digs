@@ -71,6 +71,16 @@ fn main() {
                         res.rdata().to_string().bold()
                     );
                 }
+                for res in res.name_servers() {
+                    let rr_type = res.rr_type().to_string().green().bold();
+
+                    println!(
+                        "  {0: <15} {1: <15} {2: <10}",
+                        rr_type.to_string(),
+                        res.name().to_string().blue(),
+                        res.rdata().to_string().bold()
+                    );
+                }
             }
         }
     }
