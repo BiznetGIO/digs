@@ -150,7 +150,7 @@ checksum = "524cbf6897b527295dff137cec09ecf3a05f4fddffd7dfcd1585403449e74198"
 
 [[package]]
 name = "digs"
-version = "0.1.1"
+version = "0.1.2"
 dependencies = [
  "assert_cmd",
  "clap",
