@@ -1,9 +1,11 @@
 use std::str::FromStr;
+
 use trust_dns_client::client::{Client, SyncClient};
-use trust_dns_client::error::ClientError;
 use trust_dns_client::op::DnsResponse;
 use trust_dns_client::rr::{DNSClass, Name, RecordType};
 use trust_dns_client::udp::UdpClientConnection;
+
+use crate::error::DigsError;
 
 /// Record Types
 #[derive(Debug, Clone, Copy)]
@@ -22,19 +24,19 @@ impl FromStr for RTypes {
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         match s {
-            "A" => Ok(RTypes::A),
-            "AAAA" => Ok(RTypes::AAAA),
-            "CNAME" => Ok(RTypes::CNAME),
-            "MX" => Ok(RTypes::MX),
-            "NS" => Ok(RTypes::NS),
-            "SOA" => Ok(RTypes::SOA),
-            "TXT" => Ok(RTypes::TXT),
+            "A" => Ok(Self::A),
+            "AAAA" => Ok(Self::AAAA),
+            "CNAME" => Ok(Self::CNAME),
+            "MX" => Ok(Self::MX),
+            "NS" => Ok(Self::NS),
+            "SOA" => Ok(Self::SOA),
+            "TXT" => Ok(Self::TXT),
             _ => Err("no match"),
         }
     }
 }
 
-fn get_rtype(rtype: RTypes) -> RecordType {
+const fn get_rtype(rtype: RTypes) -> RecordType {
     match rtype {
         RTypes::A => RecordType::A,
         RTypes::AAAA => RecordType::AAAA,
@@ -47,25 +49,24 @@ fn get_rtype(rtype: RTypes) -> RecordType {
 }
 
 /// Parse address string
-fn get_address(nameserver: &str) -> std::net::SocketAddr {
+fn get_address(nameserver: &str) -> Result<std::net::SocketAddr, DigsError> {
     let address = format!("{}:53", nameserver).parse::<std::net::SocketAddr>();
     match address {
-        Err(_) => {
-            eprintln!("Invalid address: '{}'", nameserver);
-            std::process::exit(1);
-        }
-        Ok(addr) => addr,
+        Ok(addr) => Ok(addr),
+        Err(_) => Err(DigsError::InvalidIpAddress(nameserver.to_string())),
     }
 }
 
-pub fn query(domain: &str, rtype: RTypes, nameserver: &str) -> Result<DnsResponse, ClientError> {
-    let address = get_address(nameserver);
+pub fn query(domain: &str, rtype: RTypes, nameserver: &str) -> Result<DnsResponse, DigsError> {
+    let address = get_address(nameserver)?;
     let conn = UdpClientConnection::new(address).unwrap();
     let client = SyncClient::new(conn);
 
     let rtype = get_rtype(rtype);
     let name = Name::from_str(&format!("{}.", domain)).unwrap();
     let response = client.query(&name, DNSClass::IN, rtype);
-
-    return response;
+    match response {
+        Ok(resp) => Ok(resp),
+        Err(err) => Err(DigsError::ForeignError(err)),
+    }
 }

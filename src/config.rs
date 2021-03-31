@@ -1,9 +1,9 @@
-use log::trace;
-use serde::Deserialize;
+use std::fs;
 use std::path::Path;
-use toml::de;
 
-use crate::utils;
+use serde::Deserialize;
+
+use crate::error::DigsError;
 
 #[derive(Deserialize, Debug)]
 pub struct Server {
@@ -16,22 +16,19 @@ pub struct Config {
     pub servers: Vec<Server>,
 }
 
-// Deserialize config intro struct.
-fn deserialize_config(content: &str) -> Result<Config, de::Error> {
-    let servers: Config = toml::from_str(&content)?;
-    Ok(servers)
+/// Deserialize config intro struct.
+/// # Errors
+///
+/// Will return `Err` if deserialization error.
+/// Possibly the error contains a position (line number) of the occurred error
+/// But this is not accurate. All the other apps that depend on toml.rs
+/// share the same faith.
+fn deserialize(content: &str) -> Result<Config, DigsError> {
+    toml::from_str(content).map_err(|e| DigsError::InvalidConfig { source: e })
 }
 
-pub fn get_config(path: &Path) -> Config {
-    let file_content = utils::read_file(path);
-    let config = deserialize_config(&file_content);
-    trace!("Config -> {:?}", config);
-
-    match config {
-        Ok(conf) => conf,
-        Err(_) => {
-            eprintln!("Invalid config file.");
-            std::process::exit(1);
-        }
-    }
+pub fn get(path: &Path) -> Result<Config, DigsError> {
+    // path must be exists. unwrap is safe here.
+    let file_content = fs::read_to_string(path).unwrap();
+    deserialize(&file_content)
 }

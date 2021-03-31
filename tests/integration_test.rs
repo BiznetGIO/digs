@@ -8,7 +8,7 @@ fn help() {
     cmd.arg("-h");
     cmd.assert()
         .success()
-        .stdout(predicate::str::contains("digs ● dig many at once"));
+        .stdout(predicate::str::contains("digs \u{25cf} dig many at once"));
 }
 
 #[test]
@@ -28,7 +28,7 @@ fn config_invalid() {
         .arg("tests/fixture/invalid.toml");
     cmd.assert()
         .failure()
-        .stderr(predicate::str::contains("Invalid config file."));
+        .stderr(predicate::str::contains("Error: Invalid config"));
 }
 
 #[test]
@@ -63,8 +63,8 @@ fn address_invalid() {
         .arg("-f")
         .arg("tests/fixture/invalid-address.toml");
     cmd.assert()
-        .failure()
-        .stderr(predicate::str::contains("Invalid addres"));
+        .success()
+        .stdout(predicate::str::contains("Invalid IP address"));
 }
 
 #[test]
@@ -73,9 +73,9 @@ fn domain_invalid() {
     cmd.arg("example")
         .arg("-f")
         .arg("tests/fixture/invalid-address.toml");
-    cmd.assert()
-        .failure()
-        .stderr(predicate::str::contains("Invalid domain name"));
+    cmd.assert().failure().stderr(predicate::str::contains(
+        r#"Error: Invalid domain "example""#,
+    ));
 }
 
 #[test]

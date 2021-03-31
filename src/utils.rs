@@ -1,30 +1,31 @@
-use std::fs;
 use std::path::{Path, PathBuf};
+
+use crate::error::DigsError;
 
 pub fn current_dir() -> PathBuf {
     std::env::current_dir().unwrap()
 }
 
-pub fn is_domain(val: &str) -> Result<(), String> {
-    if val.contains(".") {
-        Ok(())
+/// # Errors
+///
+/// Will return `Err` if `domain` is not valid
+pub fn is_domain(domain: &str) -> Result<String, DigsError> {
+    if domain.contains('.') {
+        Ok(domain.to_string())
     } else {
-        Err(String::from("Invalid domain name."))
+        Err(DigsError::InvalidDomain(domain.to_string()))
     }
 }
 
-pub fn is_exist(val: &str) -> Result<(), String> {
-    let path = Path::new(val);
-
-    if path.exists() {
-        Ok(())
-    } else {
-        Err(String::from("No such file."))
-    }
-}
-
-pub fn read_file(path: &Path) -> String {
+/// # Errors
+///
+/// Will return `Err` if `path` does not exist
+pub fn is_exist(path: &str) -> Result<PathBuf, DigsError> {
     let path = Path::new(path);
 
-    fs::read_to_string(path).expect("Can't read file")
+    if path.exists() {
+        Ok(path.to_path_buf())
+    } else {
+        Err(DigsError::NoFile(path.to_path_buf()))
+    }
 }
