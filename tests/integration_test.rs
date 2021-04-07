@@ -12,6 +12,15 @@ fn help() {
 }
 
 #[test]
+fn default_config_not_found() {
+    let mut cmd = Command::cargo_bin("digs").unwrap();
+    cmd.arg("example.net").arg("-f").arg("file/doesnt/exist");
+    cmd.assert()
+        .failure()
+        .stderr(predicate::str::contains("No such file"));
+}
+
+#[test]
 fn config_not_found() {
     let mut cmd = Command::cargo_bin("digs").unwrap();
     cmd.arg("example.net").arg("-f").arg("file/doesnt/exist");
