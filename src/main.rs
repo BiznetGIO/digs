@@ -19,6 +19,7 @@ fn run() -> Result<()> {
     let domain = utils::is_domain(matches.value_of("domain").unwrap())?;
 
     // get rtype
+    // must be present. unwrap safe here
     let rtype = matches.value_of_t("rtype").unwrap();
 
     // get config file

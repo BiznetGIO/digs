@@ -4,6 +4,7 @@ use std::path::PathBuf;
 
 use thiserror::Error;
 use trust_dns_client::error::ClientError;
+use trust_dns_client::proto::error::ProtoError;
 
 /// all possible errors returned by the app.
 #[derive(Error, Debug)]
@@ -30,4 +31,8 @@ pub enum DigsError {
     // All cases of `std::io::Error`.
     #[error(transparent)]
     IOError(#[from] std::io::Error),
+
+    // All cases of `trust_dns_proto::error::ProtoError`
+    #[error(transparent)]
+    Pro(#[from] ProtoError),
 }

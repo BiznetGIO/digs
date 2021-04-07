@@ -20,6 +20,7 @@ dig many at once.
 ## Features
 
 - Prevent invalid input before querying. Such invalid records type or configuration.
+- No panics, good error handling.
 - [more faster](docs/benchmark.md) compared to previous `digs.py`.
 - Colourful output.
 - Cross-platform.
