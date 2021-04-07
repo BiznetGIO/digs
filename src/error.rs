@@ -26,4 +26,8 @@ pub enum DigsError {
     // All cases from trust-dns
     #[error("Error: {0:?}")]
     ForeignError(#[from] ClientError),
+
+    // All cases of `std::io::Error`.
+    #[error(transparent)]
+    IOError(#[from] std::io::Error),
 }

@@ -28,7 +28,6 @@ fn deserialize(content: &str) -> Result<Config, DigsError> {
 }
 
 pub fn get(path: &Path) -> Result<Config, DigsError> {
-    // path must be exists. unwrap is safe here.
-    let file_content = fs::read_to_string(path).unwrap();
+    let file_content = fs::read_to_string(path)?;
     deserialize(&file_content)
 }
