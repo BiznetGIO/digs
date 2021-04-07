@@ -59,11 +59,11 @@ fn get_address(nameserver: &str) -> Result<std::net::SocketAddr, DigsError> {
 
 pub fn query(domain: &str, rtype: RTypes, nameserver: &str) -> Result<DnsResponse, DigsError> {
     let address = get_address(nameserver)?;
-    let conn = UdpClientConnection::new(address).unwrap();
+    let conn = UdpClientConnection::new(address)?;
     let client = SyncClient::new(conn);
 
     let rtype = get_rtype(rtype);
-    let name = Name::from_str(&format!("{}.", domain)).unwrap();
+    let name = Name::from_str(&format!("{}.", domain))?;
     let response = client.query(&name, DNSClass::IN, rtype);
     match response {
         Ok(resp) => Ok(resp),

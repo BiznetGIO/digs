@@ -2,8 +2,8 @@ use std::path::{Path, PathBuf};
 
 use crate::error::DigsError;
 
-pub fn current_dir() -> PathBuf {
-    std::env::current_dir().unwrap()
+pub fn current_dir() -> Result<PathBuf, DigsError> {
+    Ok(std::env::current_dir()?)
 }
 
 /// # Errors
