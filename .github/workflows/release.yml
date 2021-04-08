@@ -116,3 +116,10 @@ jobs:
           asset_name: ${{ matrix.asset_name }}
           tag: ${{ github.ref }}
           overwrite: true
+
+      - name: Publish to crates.io
+        # do it only once
+        if: matrix.build == 'linux'
+        uses: katyo/publish-crates@v1
+        with:
+          registry-token: ${{ secrets.CARGO_REGISTRY_TOKEN }}
