@@ -6,6 +6,9 @@ dig many at once.
 <a href="https://github.com/BiznetGIO/digs/actions/workflows/ci.yml">
 <img src="https://github.com/BiznetGIO/digs/workflows/ci/badge.svg">
 </a>
+<a href="https://crates.io/crates/digs">
+<img src="https://img.shields.io/crates/v/digs.svg">
+</a>
 
 <p></p>
 
@@ -58,18 +61,19 @@ Run `digs --help` to see more available options.
 
 ## Installation
 
-### Binary releases
 
-Download the binary from the [release page](https://github.com/BiznetGIO/digs/releases)
+### From binaries
 
-### With cargo (from source)
+The [release page](https://github.com/BiznetGIO/digs/releases) includes
+pre-compiled binaries for GNU/Linux, macOS and Windows.
+
+### From source
+
+Using Rust's package manager [cargo](https://github.com/rust-lang/cargo):
 
 ``` bash
-$ git clone 
-$ cd digs
-$ cargo install --path .
+cargo install digs
 ```
-
 
 ---
 
