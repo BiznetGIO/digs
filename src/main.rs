@@ -25,7 +25,7 @@ fn run() -> Result<()> {
     // get config file
     let config_path: PathBuf = match matches.value_of("config") {
         Some(path) => utils::is_exist(path)?,
-        None => utils::is_exist("digs.toml".into())?,
+        None => utils::is_exist("digs.toml")?,
     };
     let config = config::get(&config_path)?;
 
