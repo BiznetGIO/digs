@@ -17,6 +17,11 @@ dig many at once.
 
 *digs* is a DNS command-line client that able to query many DNS servers at once.
 
+## Why?
+
+We work with DNS records a lot. Having a tools that inspect multiple
+records across different machines at once is a lifesaver.
+
 ## Features
 
 - Prevent invalid input before querying. Such invalid records type or configuration.
