@@ -2,6 +2,10 @@
 
 Unreleased changes. Release notes have not yet been written.
 
+# 0.1.5 (2021-04-08)
+
+This release include fixes for creates.io workflow.
+
 # 0.1.4 (2021-04-08)
 
 digs 0.1.4 a minor version release that fixes config bugs.
