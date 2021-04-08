@@ -7,7 +7,7 @@ repository = "https://github.com/BiznetGIO/digs"
 keywords = ["cli", "dns", "dig"]
 categories = ["command-line-utilities"]
 edition = "2018"
-license = "GPLv3"
+license = "GPL-3.0-only"
 exclude = ["/README.md"]
 
 [profile.release]
