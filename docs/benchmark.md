@@ -92,7 +92,7 @@ Benchmark #1: digs example.net A
 
 ## Summary
 
-Using `digs.toml.1` as input:
+Using `digs.1.toml` as input:
 
 | Tool        | Command             | Time (mean) |
 | ----        | -------             | ----------- |
@@ -100,19 +100,19 @@ Using `digs.toml.1` as input:
 | digs.py 🐍  | `digs example.net ` | **507.2ms** |
 
 
-Using `digs.toml.2` as input:
+Using `digs.2.toml` as input:
 
 ``` bash
 > # digs.rs
-❯ hyperfine --warmup 3 --max-runs 10 'digs example.net A -f digs.toml.2'
-Benchmark #1: digs example.net A -f digs.toml.2
+❯ hyperfine --warmup 3 --max-runs 10 'digs example.net A -f digs.2.toml'
+Benchmark #1: digs example.net A -f digs.2.toml
   Time (mean ± σ):      1.321 s ±  0.032 s    [User: 6.4 ms, System: 7.7 ms]
   Range (min … max):    1.259 s …  1.350 s    10 runs
   
   
 > # digs.py
-❯ hyperfine --warmup 3 --max-runs 10 'digs example.net A -f digs.yaml.2'
-Benchmark #1: digs example.net A -f digs.yaml.2
+❯ hyperfine --warmup 3 --max-runs 10 'digs example.net A -f digs.2.yaml'
+Benchmark #1: digs example.net A -f digs.2.yaml
   Time (mean ± σ):      1.548 s ±  0.215 s    [User: 158.3 ms, System: 19.6 ms]
   Range (min … max):    1.356 s …  1.960 s    10 runs
 ```

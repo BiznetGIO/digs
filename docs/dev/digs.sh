@@ -5,5 +5,5 @@ digs --help
 c
 digs example.net A
 c
-digs example.net A -f digs.toml.example
+digs example.net A -f digs.example.toml
 
