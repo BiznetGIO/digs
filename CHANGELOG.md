@@ -2,6 +2,8 @@
 
 Unreleased changes. Release notes have not yet been written.
 
+- tell user if no zone found
+
 # 0.1.5 (2021-04-08)
 
 This release include fixes for creates.io workflow.
