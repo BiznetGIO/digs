@@ -41,7 +41,7 @@ fn run() -> Result<()> {
             Ok(res) => {
                 let print_output = |rr_type: String, name: String, rdata: String| {
                     println!(
-                        "  {0: <15} {1: <15} {2: <10}",
+                        "  {} {} {}",
                         rr_type.green().bold(),
                         name.blue(),
                         rdata.bold()
