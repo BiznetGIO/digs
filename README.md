@@ -75,6 +75,19 @@ Using Rust's package manager [cargo](https://github.com/rust-lang/cargo):
 cargo install digs
 ```
 
+## Development
+
+``` bash
+git clone https://github.com/BiznetGIO/digs
+cd digs
+
+# Run unit tests and integration tests
+cargo test
+
+# Install
+cargo install --path .
+```
+
 ---
 
 ## Licence
