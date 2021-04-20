@@ -1,7 +1,7 @@
 [package]
 name = "digs"
 description = "digs many at once"
-version = "0.1.5"
+version = "0.1.6"
 authors = ["azzamsa <azzam@biznetgio.com>"]
 repository = "https://github.com/BiznetGIO/digs"
 keywords = ["cli", "dns", "dig"]
