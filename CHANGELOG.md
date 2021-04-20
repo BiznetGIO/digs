@@ -2,7 +2,10 @@
 
 Unreleased changes. Release notes have not yet been written.
 
-- tell user if no zone found
+# 0.1.6 (2021-04-20)
+
+Bug fixes:
+- Tell user if no zone found. If the target record is not found, show the default record (SOA). Otherwise, it's no zone.
 
 # 0.1.5 (2021-04-08)
 
