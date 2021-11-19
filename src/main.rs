@@ -37,7 +37,7 @@ fn run() -> Result<()> {
         println!("{}", server.name);
         match response {
             Err(e) => {
-                println!("  {}", e.to_string().red())
+                println!("  {}", e.to_string().red());
             }
             Ok(res) => {
                 let print_output = |rr_type: String, name: String, rdata: String| {
