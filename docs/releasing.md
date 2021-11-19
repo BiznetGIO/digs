@@ -1,13 +1,9 @@
 # Release Checklist
 
-- Run linting:
-
-``` bash
-$ find . | grep "\.rs" | xargs touch ; cargo clippy --all-features -- --deny warnings --deny clippy::pedantic --deny clippy::nursery
-```
-
 - Run `cargo update` and review dependency updates.
+- Run the lint check: `cargo clippy --all-features -- --deny warnings --deny clippy::pedantic --deny clippy::nursery`
 - Update the CHANGELOG.
-- Update version numbers in `Cargo.toml`, Run `cargo update -p digs` so that the Cargo.lock is updated.
-- Create new branch (master branch is protected), commit with a message format: `v[0-9]+.[0-9]+.[0-9]+`, and push.
-- Wait for a checks to pass, merge the branch to master, then tag a release with a copy of the relevant section of the CHANGELOG.
+- Update version numbers in `Cargo.toml`, then run `cargo update -p digs` so that the Cargo.lock is updated.
+- Create a commit with a message format: `v[0-9]+.[0-9]+.[0-9]+`, and push.
+- Wait for the checks to pass, tag a commit with a release tag, then push the tag.
+- Create a new GitHub release with the created tag above.

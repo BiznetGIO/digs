@@ -2,6 +2,11 @@
 
 Unreleased changes. Release notes have not yet been written.
 
+# 0.1.7 (2021-11-20)
+
+Development:
+- Revert Clap to v2. The v3 API is always changing.
+
 # 0.1.6 (2021-04-20)
 
 Bug fixes:
