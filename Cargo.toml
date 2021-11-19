@@ -19,13 +19,17 @@ panic = 'abort'
 [dependencies]
 anyhow = "1.0.40"
 colored = "2.0.0"
-clap = "3.0.0-beta.2"
 log = "0.4.14"
 pretty_env_logger = "0.4.0"
 serde = { version = "1.0.125", features = ["derive"] }
 thiserror = "1.0.24"
 toml = "0.5.8"
 trust-dns-client = "0.20.0"
+
+[dependencies.clap]
+version = "2.33.0"
+default-features = false
+features = ["suggestions"]
 
 [dev-dependencies]
 assert_cmd = "1.0.3"

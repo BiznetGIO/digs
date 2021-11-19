@@ -1,27 +1,27 @@
 use clap::{crate_version, App, AppSettings, Arg};
 
-pub fn build() -> App<'static> {
+pub fn build() -> App<'static, 'static> {
     let app = App::new("digs \u{25cf} dig many at once")
         .setting(AppSettings::ArgRequiredElseHelp)
         .setting(AppSettings::ColoredHelp)
         .version(crate_version!())
         .arg(
-            Arg::new("domain")
+            Arg::with_name("domain")
                 .required(true)
-                .about("Domain name to query"),
+                .help("Domain name to query"),
         )
         .arg(
-            Arg::new("rtype")
+            Arg::with_name("rtype")
                 .possible_values(&["A", "AAAA", "CNAME", "MX", "NS", "SOA", "TXT"])
                 .default_value("A")
-                .about("Record Type"),
+                .help("Record Type"),
         )
         .arg(
-            Arg::new("config")
-                .short('f')
+            Arg::with_name("config")
+                .short("f")
                 .long("file")
                 .takes_value(true)
-                .about("Specify an alternate configuration file"),
+                .help("Specify an alternate configuration file"),
         );
 
     app

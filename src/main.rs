@@ -5,6 +5,7 @@ use std::path::PathBuf;
 use std::process;
 
 use anyhow::Result;
+use clap::value_t;
 use colored::*;
 use log::trace;
 
@@ -20,7 +21,7 @@ fn run() -> Result<()> {
 
     // get rtype
     // must be present. unwrap safe here
-    let rtype = matches.value_of_t("rtype").unwrap();
+    let rtype = value_t!(matches.value_of("rtype"), dns::RTypes).unwrap();
 
     // get config file
     let config_path: PathBuf = match matches.value_of("config") {
