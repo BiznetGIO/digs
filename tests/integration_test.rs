@@ -48,7 +48,7 @@ fn rtype_invalid() {
         .arg("-f")
         .arg("tests/fixture/digs.toml");
     cmd.assert().failure().stderr(predicate::str::contains(
-        r#"'FOO' isn't a valid value for '<rtype>'"#,
+        r#""FOO" isn't a valid value for '<rtype>'"#,
     ));
 }
 
