@@ -8,7 +8,7 @@ fn help() {
     cmd.arg("-h");
     cmd.assert()
         .success()
-        .stdout(predicate::str::contains("digs \u{25cf} dig many at once"));
+        .stdout(predicate::str::contains("dig many at once"));
 }
 
 #[test]
@@ -48,7 +48,7 @@ fn rtype_invalid() {
         .arg("-f")
         .arg("tests/fixture/digs.toml");
     cmd.assert().failure().stderr(predicate::str::contains(
-        r#""FOO" isn't a valid value for '<rtype>'"#,
+        r#"'FOO' isn't a valid value for '[RTYPE]'"#,
     ));
 }
 

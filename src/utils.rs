@@ -2,10 +2,6 @@ use std::path::{Path, PathBuf};
 
 use crate::error::DigsError;
 
-pub fn current_dir() -> Result<PathBuf, DigsError> {
-    Ok(std::env::current_dir()?)
-}
-
 /// # Errors
 ///
 /// Will return `Err` if `domain` is not valid
@@ -28,4 +24,8 @@ pub fn is_exist(path: &str) -> Result<PathBuf, DigsError> {
     } else {
         Err(DigsError::NoFile(path.to_path_buf()))
     }
+}
+
+pub fn current_dir() -> Result<PathBuf, DigsError> {
+    Ok(std::env::current_dir()?)
 }

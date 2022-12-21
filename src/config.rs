@@ -16,6 +16,11 @@ pub struct Config {
     pub servers: Vec<Server>,
 }
 
+pub fn read(path: &Path) -> Result<Config, DigsError> {
+    let file_content = fs::read_to_string(path)?;
+    deserialize(&file_content)
+}
+
 /// Deserialize config intro struct.
 /// # Errors
 ///
@@ -25,9 +30,4 @@ pub struct Config {
 /// share the same faith.
 fn deserialize(content: &str) -> Result<Config, DigsError> {
     toml::from_str(content).map_err(|e| DigsError::InvalidConfig { source: e })
-}
-
-pub fn get(path: &Path) -> Result<Config, DigsError> {
-    let file_content = fs::read_to_string(path)?;
-    deserialize(&file_content)
 }

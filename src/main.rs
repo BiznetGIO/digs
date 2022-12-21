@@ -1,36 +1,37 @@
 #![allow(clippy::wildcard_imports)]
 
-use std::env;
-use std::path::PathBuf;
-use std::process;
+use std::{path::PathBuf, process};
+use trust_dns_client::rr::RecordType;
 
-use anyhow::{Result, Context};
+use anyhow::{Context, Result};
+use clap::Parser;
 use colored::*;
 use log::trace;
 
-use digs::app;
-use digs::{config, dns, utils};
+use digs::{cli, cli::Opts, config, dns, utils};
 
 fn run() -> Result<()> {
-    let matches = app::build().get_matches_from(env::args_os());
+    let opts = Opts::parse();
 
-    // get domain
-    // domain must be present. unwrap safe here
-    let domain = utils::is_domain(matches.value_of("domain").unwrap())?;
+    let domain = utils::is_domain(&opts.domain)?;
+    let record_type = match opts.rtype {
+        cli::RecordType::A => RecordType::A,
+        cli::RecordType::AAAA => RecordType::AAAA,
+        cli::RecordType::CNAME => RecordType::CNAME,
+        cli::RecordType::MX => RecordType::MX,
+        cli::RecordType::NS => RecordType::NS,
+        cli::RecordType::SOA => RecordType::SOA,
+        cli::RecordType::TXT => RecordType::TXT,
+    };
 
-    // get rtype
-    // must be present. unwrap safe here
-    let rtype = matches.value_of_t("rtype").unwrap();
-
-    // get config file
-    let config_path: PathBuf = match matches.value_of("config") {
-        Some(path) => utils::is_exist(path)?,
+    let config_path: PathBuf = match opts.config {
+        Some(path) => utils::is_exist(&path)?,
         None => utils::is_exist("digs.toml")?,
     };
-    let config = config::get(&config_path)?;
+    let config = config::read(&config_path)?;
 
     for server in config.servers {
-        let response = dns::query(&domain, rtype, &server.ip);
+        let response = dns::query(&domain, record_type, &server.ip);
         trace!("Response -> {:?}", response);
 
         println!("{}", server.name);
@@ -51,13 +52,21 @@ fn run() -> Result<()> {
                 if !res.answers().is_empty() {
                     for res in res.answers() {
                         let rr_type = res.rr_type().to_string();
-                        print_output(rr_type, res.name().to_string(), res.data().context("no `rdata` found")?.to_string());
+                        print_output(
+                            rr_type,
+                            res.name().to_string(),
+                            res.data().context("no `rdata` found")?.to_string(),
+                        );
                     }
                 } else if res.answers().is_empty() && !res.name_servers().is_empty() {
                     // if answers is empty, print default record (SOA)
                     for res in res.name_servers() {
                         let rr_type = res.rr_type().to_string();
-                        print_output(rr_type, res.name().to_string(), res.data().context("no `rdata` found")?.to_string());
+                        print_output(
+                            rr_type,
+                            res.name().to_string(),
+                            res.data().context("no `rdata` found")?.to_string(),
+                        );
                     }
                 } else {
                     // if default doesn't exist
