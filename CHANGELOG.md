@@ -1,47 +1,33 @@
-# TBD
+# Changelog
 
-Unreleased changes. Release notes have not yet been written.
+All notable changes to this project will be documented in this file.
 
-# 0.1.7 (2021-11-20)
+## [0.2.0] - 2022-12-21
 
-Development:
+### Features
 
-- Revert Clap to v2. The v3 API is always changing.
+- Better error messsage ([f069b3e](f069b3e423302ed04377f1662a5c603078e672c4))
 
-# 0.1.6 (2021-04-20)
+### Bug fixes
 
-Bug fixes:
+- Change `--file` to `--config` ([4969414](49694145a80e0d5f8c10b7660a77822b93fdec93))
 
-- Tell user if no zone found. If the target record is not found, show the default record (SOA). Otherwise, it's no zone.
+## [0.1.6] - 2021-04-20
 
-# 0.1.5 (2021-04-08)
+### Bug fixes
 
-This release include fixes for creates.io workflow.
+- Tell user if no zone found ([4e5cd51](4e5cd51482ea69da364ff92101e5286e9e7a817d))
 
-# 0.1.4 (2021-04-08)
+## [0.1.5] - 2021-04-08
 
-digs 0.1.4 a minor version release that fixes config bugs.
-Starting from this version the code-base also free from `unwrap`.
-Thus hopefully ensure no `panic` will occur.
+### Bug fixes
 
-Bug fixes:
+- Avoid all panics with proper error handling ([71a6e4b](71a6e4bbb33f75dac03579d897788e53d8a44e63))
+- Panic if default config also doesn't exist ([fb84831](fb84831eae98a09c21818f3678ad9ec644350ca0))
 
-- [BUG #7](https://github.com/BiznetGIO/digs/pull/7): fix panic if default config also doesn't exist
-- [BUG #8](https://github.com/BiznetGIO/digs/pull/8): avoid all panics with proper Error handling
+## [0.1.2] - 2021-02-22
 
-# 0.1.3 (2021-04-01)
+### Features
 
-Feature enhancements:
-
-- [FEATURE #5]: Return different exit code and give more context to the error
-
-# 0.1.2 (2021-02-22)
-
-Feature enhancements:
-
-- [FEATURE #2]: Support querying CNAME record
-- [FEATURE #2]: Use name server reply (SOA) if record answer is empty
-
-# 0.1.1
-
-Initial release
+- Use name server reply (SOA) if record answer is empty ([2e93189](2e93189efcd00e81280af6bd4d16b3fdda55a35e))
+- Support CNAME record ([4ce3318](4ce3318be855f2e0a9888fd7d5a0289afaf4cb20))
