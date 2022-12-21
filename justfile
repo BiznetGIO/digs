@@ -3,6 +3,7 @@
 shebang := if os() == 'windows' { 'powershell.exe' } else { '/usr/bin/sh' }
 
 alias d := dev
+alias l := lint
 alias t := test
 
 # List available commands.
