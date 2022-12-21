@@ -18,7 +18,7 @@ pub struct Opts {
     pub rtype: RecordType,
 
     /// Specify an alternate configuration file
-    #[arg(short = 'f', long = "file", default_value_os_t = PathBuf::from("digs.toml"))]
+    #[arg(short, long, default_value_os_t = PathBuf::from("digs.toml"))]
     pub config: PathBuf,
 }
 

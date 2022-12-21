@@ -16,7 +16,7 @@ fn help() -> Result<(), Box<dyn Error>> {
 fn default_config_not_found() -> Result<(), Box<dyn Error>> {
     let mut cmd = Command::cargo_bin("digs")?;
     cmd.arg("example.net")
-        .arg("-f")
+        .arg("-c")
         .arg("file/doesnt/exist/digs.toml");
     cmd.assert()
         .failure()
@@ -27,7 +27,7 @@ fn default_config_not_found() -> Result<(), Box<dyn Error>> {
 #[test]
 fn config_not_found() -> Result<(), Box<dyn Error>> {
     let mut cmd = Command::cargo_bin("digs")?;
-    cmd.arg("example.net").arg("-f").arg("file/doesnt/exist");
+    cmd.arg("example.net").arg("-c").arg("file/doesnt/exist");
     cmd.assert()
         .failure()
         .stderr(predicate::str::contains("Configuration file is not found"));
@@ -38,7 +38,7 @@ fn config_not_found() -> Result<(), Box<dyn Error>> {
 fn config_invalid() -> Result<(), Box<dyn Error>> {
     let mut cmd = Command::cargo_bin("digs")?;
     cmd.arg("example.net")
-        .arg("-f")
+        .arg("-c")
         .arg("tests/fixture/invalid.toml");
     cmd.assert().failure().stderr(predicate::str::contains(
         "Invalid configuration: missing field `name`",
@@ -51,7 +51,7 @@ fn rtype_invalid() -> Result<(), Box<dyn Error>> {
     let mut cmd = Command::cargo_bin("digs")?;
     cmd.arg("example.net")
         .arg("FOO")
-        .arg("-f")
+        .arg("-c")
         .arg("tests/fixture/digs.toml");
     cmd.assert().failure().stderr(predicate::str::contains(
         r#"'FOO' isn't a valid value for '[RTYPE]'"#,
@@ -65,7 +65,7 @@ fn rtype_too_many() -> Result<(), Box<dyn Error>> {
     cmd.arg("example.net")
         .arg("A")
         .arg("MX")
-        .arg("-f")
+        .arg("-c")
         .arg("tests/fixture/digs.toml");
     cmd.assert().failure().stderr(predicate::str::contains(
         "Found argument 'MX' which wasn't expected",
@@ -77,7 +77,7 @@ fn rtype_too_many() -> Result<(), Box<dyn Error>> {
 fn address_invalid() -> Result<(), Box<dyn Error>> {
     let mut cmd = Command::cargo_bin("digs")?;
     cmd.arg("example.net")
-        .arg("-f")
+        .arg("-c")
         .arg("tests/fixture/invalid-address.toml");
     cmd.assert()
         .success()
@@ -100,7 +100,7 @@ fn query() -> Result<(), Box<dyn Error>> {
     let mut cmd = Command::cargo_bin("digs")?;
     cmd.arg("example.net")
         .arg("A")
-        .arg("-f")
+        .arg("-c")
         .arg("tests/fixture/digs.toml");
     cmd.assert()
         .success()
@@ -113,7 +113,7 @@ fn query() -> Result<(), Box<dyn Error>> {
 fn query_without_rtype() -> Result<(), Box<dyn Error>> {
     let mut cmd = Command::cargo_bin("digs")?;
     cmd.arg("example.net")
-        .arg("-f")
+        .arg("-c")
         .arg("tests/fixture/digs.toml");
     cmd.assert()
         .success()
