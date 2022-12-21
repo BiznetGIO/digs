@@ -15,10 +15,12 @@ fn help() -> Result<(), Box<dyn Error>> {
 #[test]
 fn default_config_not_found() -> Result<(), Box<dyn Error>> {
     let mut cmd = Command::cargo_bin("digs")?;
-    cmd.arg("example.net").arg("-f").arg("file/doesnt/exist");
+    cmd.arg("example.net")
+        .arg("-f")
+        .arg("file/doesnt/exist/digs.toml");
     cmd.assert()
         .failure()
-        .stderr(predicate::str::contains("No such file"));
+        .stderr(predicate::str::contains("Configuration file is not found"));
     Ok(())
 }
 
@@ -28,7 +30,7 @@ fn config_not_found() -> Result<(), Box<dyn Error>> {
     cmd.arg("example.net").arg("-f").arg("file/doesnt/exist");
     cmd.assert()
         .failure()
-        .stderr(predicate::str::contains("No such file"));
+        .stderr(predicate::str::contains("Configuration file is not found"));
     Ok(())
 }
 
@@ -38,9 +40,9 @@ fn config_invalid() -> Result<(), Box<dyn Error>> {
     cmd.arg("example.net")
         .arg("-f")
         .arg("tests/fixture/invalid.toml");
-    cmd.assert()
-        .failure()
-        .stderr(predicate::str::contains("Error: Invalid config"));
+    cmd.assert().failure().stderr(predicate::str::contains(
+        "Invalid configuration: missing field `name`",
+    ));
     Ok(())
 }
 
@@ -79,19 +81,17 @@ fn address_invalid() -> Result<(), Box<dyn Error>> {
         .arg("tests/fixture/invalid-address.toml");
     cmd.assert()
         .success()
-        .stdout(predicate::str::contains("Invalid IP address"));
+        .stdout(predicate::str::contains("Invalid IP Adrress `8.8.8"));
     Ok(())
 }
 
 #[test]
 fn domain_invalid() -> Result<(), Box<dyn Error>> {
     let mut cmd = Command::cargo_bin("digs")?;
-    cmd.arg("example")
-        .arg("-f")
-        .arg("tests/fixture/invalid-address.toml");
-    cmd.assert().failure().stderr(predicate::str::contains(
-        r#"Error: Invalid domain "example""#,
-    ));
+    cmd.arg("example");
+    cmd.assert()
+        .failure()
+        .stderr(predicate::str::contains(r#"Invalid domain "example""#));
     Ok(())
 }
 

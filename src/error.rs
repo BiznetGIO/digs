@@ -1,36 +1,51 @@
 use std::path::PathBuf;
 
+use miette::Diagnostic;
 use thiserror::Error;
-use trust_dns_client::error::ClientError;
-use trust_dns_client::proto::error::ProtoError;
 
 /// all possible errors returned by the app.
-#[derive(Error, Debug)]
+#[derive(Debug, Error, Diagnostic)]
 pub enum Error {
+    #[error("{0}")]
+    Internal(String),
+
+    #[error("{0}")]
+    InvalidArgument(String),
+
     #[error("Invalid domain {0:?}")]
     InvalidDomain(String),
 
-    #[error("No such file {0:?}")]
-    NoFile(PathBuf),
+    #[error("Configuration file is not found `{path}`")]
+    #[diagnostic(
+        code(digs::no_config),
+        url(docsrs),
+        help("Try creating a config file. See https://github.com/BiznetGIO/digs#usage")
+    )]
+    ConfigNotFound { path: PathBuf },
 
-    #[error("Invalid config")]
-    InvalidConfig { source: toml::de::Error },
+    #[error("Invalid configuration: {message}")]
+    #[diagnostic(
+        code(bilal::invalid_config),
+        url(docsrs),
+        help("See the configuration example https://github.com/BiznetGIO/digs#usage")
+    )]
+    InvalidConfig { message: String },
+}
 
-    #[error("Invalid IP address {0:?}")]
-    InvalidIpAddress(String),
+impl std::convert::From<std::io::Error> for Error {
+    fn from(err: std::io::Error) -> Self {
+        Error::Internal(err.to_string())
+    }
+}
 
-    #[error("Network is unreachable")]
-    NetworkError,
+impl std::convert::From<trust_dns_client::error::ClientError> for Error {
+    fn from(err: trust_dns_client::error::ClientError) -> Self {
+        Self::InvalidArgument(err.to_string())
+    }
+}
 
-    // All cases from trust-dns
-    #[error("Error: {0:?}")]
-    ForeignError(#[from] ClientError),
-
-    // All cases of `std::io::Error`.
-    #[error(transparent)]
-    IOError(#[from] std::io::Error),
-
-    // All cases of `trust_dns_proto::error::ProtoError`
-    #[error(transparent)]
-    Pro(#[from] ProtoError),
+impl std::convert::From<trust_dns_client::proto::error::ProtoError> for Error {
+    fn from(err: trust_dns_client::proto::error::ProtoError) -> Self {
+        Self::InvalidArgument(err.to_string())
+    }
 }

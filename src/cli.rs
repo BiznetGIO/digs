@@ -1,3 +1,5 @@
+use std::path::PathBuf;
+
 use clap::{Parser, ValueEnum};
 
 #[derive(Parser)]
@@ -16,8 +18,8 @@ pub struct Opts {
     pub rtype: RecordType,
 
     /// Specify an alternate configuration file
-    #[arg(short = 'f', long = "file")]
-    pub config: Option<String>,
+    #[arg(short = 'f', long = "file", default_value_os_t = PathBuf::from("digs.toml"))]
+    pub config: PathBuf,
 }
 
 #[derive(Copy, Clone, PartialEq, Eq, PartialOrd, Ord, ValueEnum)]

@@ -13,11 +13,7 @@ pub fn query(domain: &str, rtype: RecordType, nameserver: &str) -> Result<DnsRes
     let client = SyncClient::new(conn);
 
     let name = Name::from_str(&format!("{}.", domain))?;
-    let response = client.query(&name, DNSClass::IN, rtype);
-    match response {
-        Ok(resp) => Ok(resp),
-        Err(err) => Err(Error::ForeignError(err)),
-    }
+    Ok(client.query(&name, DNSClass::IN, rtype)?)
 }
 
 /// Parse address string
@@ -25,6 +21,9 @@ fn get_address(nameserver: &str) -> Result<std::net::SocketAddr, Error> {
     let address = format!("{}:53", nameserver).parse::<std::net::SocketAddr>();
     match address {
         Ok(addr) => Ok(addr),
-        Err(_) => Err(Error::InvalidIpAddress(nameserver.to_string())),
+        Err(_) => Err(Error::InvalidArgument(format!(
+            "Invalid IP Adrress `{}`",
+            &nameserver
+        ))),
     }
 }
