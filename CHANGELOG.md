@@ -5,11 +5,13 @@ Unreleased changes. Release notes have not yet been written.
 # 0.1.7 (2021-11-20)
 
 Development:
+
 - Revert Clap to v2. The v3 API is always changing.
 
 # 0.1.6 (2021-04-20)
 
 Bug fixes:
+
 - Tell user if no zone found. If the target record is not found, show the default record (SOA). Otherwise, it's no zone.
 
 # 0.1.5 (2021-04-08)
@@ -39,7 +41,6 @@ Feature enhancements:
 
 - [FEATURE #2]: Support querying CNAME record
 - [FEATURE #2]: Use name server reply (SOA) if record answer is empty
-
 
 # 0.1.1
 

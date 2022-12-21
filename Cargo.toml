@@ -1,24 +1,24 @@
 [package]
 name = "digs"
-description = "digs many at once"
 version = "0.1.7"
 authors = ["azzamsa <azzam@biznetgio.com>"]
-repository = "https://github.com/BiznetGIO/digs"
-keywords = ["cli", "dns", "dig"]
 categories = ["command-line-utilities"]
 edition = "2018"
-license = "GPL-3.0-only"
 exclude = ["/README.md"]
+keywords = ["cli", "dns", "dig"]
+license = "GPL-3.0-only"
+repository = "https://github.com/BiznetGIO/digs"
+description = "digs many at once"
 
 [profile.release]
-opt-level = 'z'  # Optimize for size.
+opt-level = 'z' # Optimize for size.
 codegen-units = 1
 lto = true
 panic = 'abort'
 
 [dependencies]
-clap = { version = "3.1.18", features = ["suggestions", "cargo"] }
 anyhow = "1.0.40"
+clap = { version = "3.1.18", features = ["suggestions", "cargo"] }
 colored = "2.0.0"
 log = "0.4.14"
 pretty_env_logger = "0.4.0"

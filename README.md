@@ -18,7 +18,7 @@ dig many at once.
 
 ---
 
-*digs* is a DNS command-line client that able to query many DNS servers at once.
+_digs_ is a DNS command-line client that able to query many DNS servers at once.
 
 ## Why?
 
@@ -38,7 +38,7 @@ records across different machines at once is a lifesaver.
 
 Prepare a configuration file that should look like this:
 
-``` toml
+```toml
 [[servers]]
 ip = "8.8.8.8"
 name = "Google"
@@ -52,7 +52,7 @@ The server can be as many as you want.
 
 Example commands:
 
-``` 
+```
 digs example.net A                    Query a domain using the configuration in current directory
 digs example.net A -f custom.toml     ...using custom configuration
 ```
@@ -60,7 +60,6 @@ digs example.net A -f custom.toml     ...using custom configuration
 Run `digs --help` to see more available options.
 
 ## Installation
-
 
 ### From binaries
 
@@ -71,13 +70,13 @@ pre-compiled binaries for GNU/Linux, macOS and Windows.
 
 Using Rust's package manager [cargo](https://github.com/rust-lang/cargo):
 
-``` bash
+```bash
 cargo install digs
 ```
 
 ## Development
 
-``` bash
+```bash
 git clone https://github.com/BiznetGIO/digs
 cd digs
 

@@ -4,12 +4,11 @@
 
 You can enable logging by using `DIGS_DEBUG=trace` as an environment variable.
 
-
 # Release Process
 
 To update the `demo,gif`, use `digs.sh` file with [dotilive](https://github.com/sloria/doitlive).
 
-``` bash
+```bash
 doitlive play digs.sh
 ```
 
