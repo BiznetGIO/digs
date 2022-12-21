@@ -25,7 +25,7 @@ pub enum Error {
 
     #[error("Invalid configuration: {message}")]
     #[diagnostic(
-        code(bilal::invalid_config),
+        code(digs::invalid_config),
         url(docsrs),
         help("See the configuration example https://github.com/BiznetGIO/digs#usage")
     )]
