@@ -3,7 +3,7 @@ use std::path::Path;
 
 use serde::Deserialize;
 
-use crate::error::DigsError;
+use crate::error::Error;
 
 #[derive(Deserialize, Debug)]
 pub struct Server {
@@ -16,7 +16,7 @@ pub struct Config {
     pub servers: Vec<Server>,
 }
 
-pub fn read(path: &Path) -> Result<Config, DigsError> {
+pub fn read(path: &Path) -> Result<Config, Error> {
     let file_content = fs::read_to_string(path)?;
     deserialize(&file_content)
 }
@@ -28,6 +28,6 @@ pub fn read(path: &Path) -> Result<Config, DigsError> {
 /// Possibly the error contains a position (line number) of the occurred error
 /// But this is not accurate. All the other apps that depend on toml.rs
 /// share the same faith.
-fn deserialize(content: &str) -> Result<Config, DigsError> {
-    toml::from_str(content).map_err(|e| DigsError::InvalidConfig { source: e })
+fn deserialize(content: &str) -> Result<Config, Error> {
+    toml::from_str(content).map_err(|e| Error::InvalidConfig { source: e })
 }

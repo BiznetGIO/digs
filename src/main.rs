@@ -1,5 +1,3 @@
-#![allow(clippy::wildcard_imports)]
-
 use std::{path::PathBuf, process};
 use trust_dns_client::rr::RecordType;
 

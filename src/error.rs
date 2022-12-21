@@ -1,5 +1,3 @@
-#![allow(clippy::module_name_repetitions)]
-
 use std::path::PathBuf;
 
 use thiserror::Error;
@@ -8,7 +6,7 @@ use trust_dns_client::proto::error::ProtoError;
 
 /// all possible errors returned by the app.
 #[derive(Error, Debug)]
-pub enum DigsError {
+pub enum Error {
     #[error("Invalid domain {0:?}")]
     InvalidDomain(String),
 
