@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.2.1] - 2022-12-21
+
+### Bug fixes
+
+- Wrong crate name in error message ([5aa6f47](5aa6f47705afc2e45b2482b64a48579bc9dfeda5))
+
 ## [0.2.0] - 2022-12-21
 
 ### Features
