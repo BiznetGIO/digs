@@ -4,7 +4,7 @@ use std::env;
 use std::path::PathBuf;
 use std::process;
 
-use anyhow::Result;
+use anyhow::{Result, Context};
 use colored::*;
 use log::trace;
 
@@ -51,13 +51,13 @@ fn run() -> Result<()> {
                 if !res.answers().is_empty() {
                     for res in res.answers() {
                         let rr_type = res.rr_type().to_string();
-                        print_output(rr_type, res.name().to_string(), res.rdata().to_string());
+                        print_output(rr_type, res.name().to_string(), res.data().context("no `rdata` found")?.to_string());
                     }
                 } else if res.answers().is_empty() && !res.name_servers().is_empty() {
                     // if answers is empty, print default record (SOA)
                     for res in res.name_servers() {
                         let rr_type = res.rr_type().to_string();
-                        print_output(rr_type, res.name().to_string(), res.rdata().to_string());
+                        print_output(rr_type, res.name().to_string(), res.data().context("no `rdata` found")?.to_string());
                     }
                 } else {
                     // if default doesn't exist
