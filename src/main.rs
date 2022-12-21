@@ -2,11 +2,9 @@ use std::process;
 use trust_dns_client::rr::RecordType;
 
 use clap::Parser;
-use colored::*;
-use log::trace;
 use miette::Result;
 
-use digs::{cli, cli::Opts, config, dns, utils};
+use digs::{cli, cli::Opts, output::Printer, utils};
 
 fn run() -> Result<()> {
     let opts = Opts::parse();
@@ -21,55 +19,9 @@ fn run() -> Result<()> {
         cli::RecordType::SOA => RecordType::SOA,
         cli::RecordType::TXT => RecordType::TXT,
     };
-    let config = config::read(&opts.config)?;
 
-    for server in config.servers {
-        let response = dns::query(&domain, record_type, &server.ip);
-        trace!("Response -> {:?}", response);
-
-        println!("{}", server.name);
-        match response {
-            Err(e) => {
-                println!("  {}", e.to_string().red());
-            }
-            Ok(res) => {
-                let print_output = |rr_type: String, name: String, rdata: String| {
-                    println!(
-                        "  {} {} {}",
-                        rr_type.green().bold(),
-                        name.blue(),
-                        rdata.bold()
-                    );
-                };
-
-                // FIXME
-                if !res.answers().is_empty() {
-                    for res in res.answers() {
-                        let rr_type = res.rr_type().to_string();
-                        print_output(
-                            rr_type,
-                            res.name().to_string(),
-                            res.data().expect("no `rdata` found").to_string(),
-                        );
-                    }
-                } else if res.answers().is_empty() && !res.name_servers().is_empty() {
-                    // if answers is empty, print default record (SOA)
-                    for res in res.name_servers() {
-                        let rr_type = res.rr_type().to_string();
-                        print_output(
-                            rr_type,
-                            res.name().to_string(),
-                            res.data().expect("no `rdata` found").to_string(),
-                        );
-                    }
-                } else {
-                    // if default doesn't exist
-                    println!("{}", "  No zone found".to_string().red());
-                }
-            }
-        }
-    }
-
+    let printer = Printer::new(domain, record_type, opts.config);
+    printer.print()?;
     Ok(())
 }
 
