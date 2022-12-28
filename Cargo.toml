@@ -31,5 +31,7 @@ version = "4.0"
 features = ["suggestions", "color", "cargo", "derive"]
 
 [dev-dependencies]
+cargo-husky = { version = "1", features = ["user-hooks"] }
+
 assert_cmd = "2.0"
 predicates = "2.1"
