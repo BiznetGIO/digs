@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.2.2] - 2022-12-28
+
+### Performance
+
+- Migrate to `owo-color` ([64dc398](64dc398cf05da3920f5b9f8c5a7b0d082965d57e))
+
 ## [0.2.1] - 2022-12-21
 
 ### Bug fixes
