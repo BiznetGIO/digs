@@ -1,7 +1,7 @@
 use std::path::PathBuf;
 
-use colored::Colorize;
 use log::trace;
+use owo_colors::OwoColorize;
 use trust_dns_client::rr::{Record, RecordType};
 
 use crate::error::Error;
@@ -54,13 +54,12 @@ impl Printer {
     }
     fn print_record(record: &Record) {
         let record_type = record.record_type().to_string();
-        let record_type = record_type.green().bold();
-        let name = record.name().to_string().blue();
+        let name = record.name().to_string();
         let rdata = match record.data() {
             Some(rdata) => rdata.to_string(),
             None => "".to_string(),
         };
         let rdata = rdata.bold();
-        println!("  {} {} {}", record_type, name, rdata);
+        println!("  {} {} {}", record_type.green().bold(), name.blue(), rdata);
     }
 }
