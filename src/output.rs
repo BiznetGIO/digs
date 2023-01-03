@@ -10,7 +10,7 @@ use crate::{config, dns};
 pub struct Printer {
     domain: String,
     record_type: RecordType,
-    config: PathBuf,
+    config_file: PathBuf,
 }
 
 impl Printer {
@@ -18,11 +18,11 @@ impl Printer {
         Self {
             domain,
             record_type,
-            config,
+            config_file: config,
         }
     }
     pub fn print(&self) -> Result<(), Error> {
-        let config = config::read(&self.config)?;
+        let config = config::read(&self.config_file)?;
 
         for server in config.servers {
             let response = dns::query(&self.domain, self.record_type, &server.ip);

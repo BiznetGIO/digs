@@ -4,6 +4,7 @@ use std::{
     path::{Path, PathBuf},
 };
 
+use miette::{NamedSource, Result, SourceOffset};
 use serde::Deserialize;
 
 use crate::error::Error;
@@ -21,26 +22,31 @@ pub struct Config {
 
 pub fn read<P>(filename: P) -> Result<Config, Error>
 where
-    P: AsRef<Path> + AsRef<OsStr>,
+    P: AsRef<Path>,
+    P: AsRef<OsStr>,
 {
     let file_content = fs::read_to_string(&filename).map_err(|_| Error::ConfigNotFound {
         path: PathBuf::from(&filename),
     })?;
-    deserialize(&file_content)
+    deserialize(&file_content, &filename)
 }
 
 /// Deserialize config intro struct.
-/// # Errors
-///
-/// Will return `Err` if deserialization error.
-/// Possibly the error contains a position (line number) of the occurred error
-/// But this is not accurate. All the other apps that depend on toml.rs
-/// share the same faith.
-fn deserialize(content: &str) -> Result<Config, Error> {
+fn deserialize<P>(content: &str, filename: P) -> Result<Config, Error>
+where
+    P: AsRef<Path>,
+    P: AsRef<OsStr>,
+{
     match toml::from_str(content) {
         Ok(config) => Ok(config),
-        Err(e) => Err(Error::InvalidConfig {
-            message: e.to_string(),
-        }),
+        Err(e) => {
+            let (line, column) = &e.line_col().unwrap_or((0, 0));
+            let filename = Path::new(&filename);
+            Err(Error::InvalidConfig {
+                src: NamedSource::new(filename.to_string_lossy(), content.to_owned()),
+                bad_bit: SourceOffset::from_location(content, line + 1, column + 1),
+                message: e.to_string(),
+            })?
+        }
     }
 }

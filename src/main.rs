@@ -20,7 +20,8 @@ fn run() -> Result<()> {
         cli::RecordType::TXT => RecordType::TXT,
     };
 
-    let printer = Printer::new(domain, record_type, opts.config);
+    let config_file = opts.config;
+    let printer = Printer::new(domain, record_type, config_file);
     printer.print()?;
     Ok(())
 }
