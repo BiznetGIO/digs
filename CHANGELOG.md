@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.3.0] - 2023-01-03
+
+### Features
+
+- Print config snippets of error location ([7879671](787967106ca614037cace3fc876f06aad0f5cd49))
+
 ## [0.2.2] - 2022-12-28
 
 ### Performance

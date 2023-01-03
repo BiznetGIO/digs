@@ -1,6 +1,6 @@
 [package]
 name = "digs"
-version = "0.2.2"
+version = "0.3.0"
 authors = ["azzamsa <azzam@biznetgio.com>"]
 categories = ["command-line-utilities"]
 edition = "2018"
