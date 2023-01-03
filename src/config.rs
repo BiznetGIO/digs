@@ -1,5 +1,8 @@
-use std::fs;
-use std::path::Path;
+use std::{
+    ffi::OsStr,
+    fs,
+    path::{Path, PathBuf},
+};
 
 use serde::Deserialize;
 
@@ -16,9 +19,12 @@ pub struct Config {
     pub servers: Vec<Server>,
 }
 
-pub fn read(path: &Path) -> Result<Config, Error> {
-    let file_content = fs::read_to_string(path).map_err(|_| Error::ConfigNotFound {
-        path: path.to_path_buf(),
+pub fn read<P>(filename: P) -> Result<Config, Error>
+where
+    P: AsRef<Path> + AsRef<OsStr>,
+{
+    let file_content = fs::read_to_string(&filename).map_err(|_| Error::ConfigNotFound {
+        path: PathBuf::from(&filename),
     })?;
     deserialize(&file_content)
 }
