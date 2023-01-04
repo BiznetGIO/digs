@@ -1,3 +1,4 @@
+use std::io::{self, Write};
 use std::path::PathBuf;
 
 use log::trace;
@@ -28,10 +29,10 @@ impl Printer {
             let response = dns::query(&self.domain, self.record_type, &server.ip);
             trace!("Response -> {:?}", response);
 
-            println!("{}", server.name);
+            writeln!(io::stdout(), "{}", server.name).ok();
             match response {
                 Err(e) => {
-                    println!("  {}", e.to_string().red());
+                    writeln!(io::stdout(), "  {}", e.to_string().red()).ok();
                 }
                 Ok(res) => {
                     if !res.answers().is_empty() {
@@ -45,7 +46,7 @@ impl Printer {
                         }
                     } else {
                         // if default doesn't exist
-                        println!("{}", "  No zone found".to_string().red());
+                        writeln!(io::stdout(), "{}", "  No zone found".to_string().red()).ok();
                     }
                 }
             }
@@ -60,6 +61,13 @@ impl Printer {
             None => "".to_string(),
         };
         let rdata = rdata.bold();
-        println!("  {} {} {}", record_type.green().bold(), name.blue(), rdata);
+        writeln!(
+            io::stdout(),
+            "  {} {} {}",
+            record_type.green().bold(),
+            name.blue(),
+            rdata
+        )
+        .ok();
     }
 }
