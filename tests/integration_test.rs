@@ -124,7 +124,7 @@ fn domain_invalid() -> Result<(), Box<dyn Error>> {
     cmd.arg("example");
     cmd.assert()
         .failure()
-        .stderr(predicate::str::contains(r#"Invalid domain "example""#));
+        .stderr(predicate::str::contains(r#"example isn't a valid domain"#));
     Ok(())
 }
 

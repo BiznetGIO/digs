@@ -12,9 +12,6 @@ pub enum Error {
     #[error("{0}")]
     InvalidArgument(String),
 
-    #[error("Invalid domain {0:?}")]
-    InvalidDomain(String),
-
     #[error("Configuration file is not found `{path}`")]
     #[diagnostic(
         code(digs::no_config),

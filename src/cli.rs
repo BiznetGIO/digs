@@ -11,6 +11,7 @@ use clap::{Parser, ValueEnum};
 )]
 pub struct Opts {
     /// Domain name to query
+    #[arg(value_parser = is_domain)]
     pub domain: String,
 
     /// Record Type
@@ -32,4 +33,12 @@ pub enum RecordType {
     NS,
     SOA,
     TXT,
+}
+
+fn is_domain(domain: &str) -> Result<String, String> {
+    if domain.contains('.') {
+        Ok(domain.to_string())
+    } else {
+        Err(format!("{} isn't a valid domain", domain))
+    }
 }

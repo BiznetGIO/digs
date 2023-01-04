@@ -4,12 +4,11 @@ use trust_dns_client::rr::RecordType;
 use clap::Parser;
 use miette::Result;
 
-use digs::{cli, cli::Opts, error::Error, output::Printer};
+use digs::{cli, cli::Opts, output::Printer};
 
 fn run() -> Result<()> {
     let opts = Opts::parse();
 
-    let domain = is_domain(&opts.domain)?;
     let record_type = match opts.rtype {
         cli::RecordType::A => RecordType::A,
         cli::RecordType::AAAA => RecordType::AAAA,
@@ -21,17 +20,9 @@ fn run() -> Result<()> {
     };
 
     let config_file = opts.config;
-    let printer = Printer::new(domain, record_type, config_file);
+    let printer = Printer::new(opts.domain, record_type, config_file);
     printer.print()?;
     Ok(())
-}
-
-fn is_domain(domain: &str) -> Result<String, Error> {
-    if domain.contains('.') {
-        Ok(domain.to_string())
-    } else {
-        Err(Error::InvalidDomain(domain.to_string()))
-    }
 }
 
 fn main() {
