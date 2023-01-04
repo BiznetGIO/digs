@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.3.1] - 2023-01-04
+
+### Performance
+
+- Use `writeln!` for better performance ([80addf6](80addf646c8196accd2445451cc3dc4eb6b911cd))
+
 ## [0.3.0] - 2023-01-03
 
 ### Features
