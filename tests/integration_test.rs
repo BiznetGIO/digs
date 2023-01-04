@@ -1,10 +1,10 @@
-use assert_cmd::prelude::*;
+use assert_cmd::{crate_name, prelude::*};
 use predicates::prelude::*;
 use std::{error::Error, process::Command};
 
 #[test]
 fn help() -> Result<(), Box<dyn Error>> {
-    let mut cmd = Command::cargo_bin("digs")?;
+    let mut cmd = Command::cargo_bin(crate_name!())?;
     cmd.arg("-h");
     cmd.assert()
         .success()
@@ -14,7 +14,7 @@ fn help() -> Result<(), Box<dyn Error>> {
 
 #[test]
 fn default_config_not_found() -> Result<(), Box<dyn Error>> {
-    let mut cmd = Command::cargo_bin("digs")?;
+    let mut cmd = Command::cargo_bin(crate_name!())?;
     cmd.arg("example.net")
         .arg("-c")
         .arg("file/doesnt/exist/digs.toml");
@@ -26,7 +26,7 @@ fn default_config_not_found() -> Result<(), Box<dyn Error>> {
 
 #[test]
 fn config_not_found() -> Result<(), Box<dyn Error>> {
-    let mut cmd = Command::cargo_bin("digs")?;
+    let mut cmd = Command::cargo_bin(crate_name!())?;
     cmd.arg("example.net").arg("-c").arg("file/doesnt/exist");
     cmd.assert()
         .failure()
@@ -36,7 +36,7 @@ fn config_not_found() -> Result<(), Box<dyn Error>> {
 
 #[test]
 fn config_invalid() -> Result<(), Box<dyn Error>> {
-    let mut cmd = Command::cargo_bin("digs")?;
+    let mut cmd = Command::cargo_bin(crate_name!())?;
     cmd.arg("example.net")
         .arg("-c")
         .arg("tests/fixture/invalid.toml");
@@ -48,7 +48,7 @@ fn config_invalid() -> Result<(), Box<dyn Error>> {
 
 #[test]
 fn rtype_invalid() -> Result<(), Box<dyn Error>> {
-    let mut cmd = Command::cargo_bin("digs")?;
+    let mut cmd = Command::cargo_bin(crate_name!())?;
     cmd.arg("example.net")
         .arg("FOO")
         .arg("-c")
@@ -61,7 +61,7 @@ fn rtype_invalid() -> Result<(), Box<dyn Error>> {
 
 #[test]
 fn rtype_too_many() -> Result<(), Box<dyn Error>> {
-    let mut cmd = Command::cargo_bin("digs")?;
+    let mut cmd = Command::cargo_bin(crate_name!())?;
     cmd.arg("example.net")
         .arg("A")
         .arg("MX")
@@ -75,7 +75,7 @@ fn rtype_too_many() -> Result<(), Box<dyn Error>> {
 
 #[test]
 fn address_invalid() -> Result<(), Box<dyn Error>> {
-    let mut cmd = Command::cargo_bin("digs")?;
+    let mut cmd = Command::cargo_bin(crate_name!())?;
     cmd.arg("example.net")
         .arg("-c")
         .arg("tests/fixture/invalid-address.toml");
@@ -87,7 +87,7 @@ fn address_invalid() -> Result<(), Box<dyn Error>> {
 
 #[test]
 fn domain_invalid() -> Result<(), Box<dyn Error>> {
-    let mut cmd = Command::cargo_bin("digs")?;
+    let mut cmd = Command::cargo_bin(crate_name!())?;
     cmd.arg("example");
     cmd.assert()
         .failure()
@@ -97,7 +97,7 @@ fn domain_invalid() -> Result<(), Box<dyn Error>> {
 
 #[test]
 fn query() -> Result<(), Box<dyn Error>> {
-    let mut cmd = Command::cargo_bin("digs")?;
+    let mut cmd = Command::cargo_bin(crate_name!())?;
     cmd.arg("example.net")
         .arg("A")
         .arg("-c")
@@ -111,7 +111,7 @@ fn query() -> Result<(), Box<dyn Error>> {
 // should fallback to A
 #[test]
 fn query_without_rtype() -> Result<(), Box<dyn Error>> {
-    let mut cmd = Command::cargo_bin("digs")?;
+    let mut cmd = Command::cargo_bin(crate_name!())?;
     cmd.arg("example.net")
         .arg("-c")
         .arg("tests/fixture/digs.toml");
