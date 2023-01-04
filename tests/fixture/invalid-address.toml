@@ -1,4 +1,0 @@
-[[servers]]
-# invalid address
-ip = "8.8.8"
-name = "Google"

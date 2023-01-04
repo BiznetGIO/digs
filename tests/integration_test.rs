@@ -1,6 +1,8 @@
-use assert_cmd::{crate_name, prelude::*};
-use predicates::prelude::*;
 use std::{error::Error, process::Command};
+
+use assert_cmd::{crate_name, prelude::*};
+use assert_fs::prelude::*;
+use predicates::prelude::*;
 
 #[test]
 fn help() -> Result<(), Box<dyn Error>> {
@@ -36,19 +38,38 @@ fn config_not_found() -> Result<(), Box<dyn Error>> {
 
 #[test]
 fn config_invalid() -> Result<(), Box<dyn Error>> {
+    let content = r#"
+[[servers]]
+# missing name
+ip = "1.1.1.1"
+
+[[servers]]
+ip = "8.8.8.8"
+name = "Google"
+
+[[servers]]
+ip = "9.9.9.9"
+name = "Quad9"
+"#;
+
     let mut cmd = Command::cargo_bin(crate_name!())?;
-    cmd.arg("example.net")
-        .arg("-c")
-        .arg("tests/fixture/invalid.toml");
+
+    let temp_dir = assert_fs::TempDir::new()?;
+    let config = temp_dir.child("invalid.toml");
+    config.write_str(content)?;
+
+    cmd.arg("example.net").arg("-c").arg(config.to_path_buf());
     cmd.assert().failure().stderr(predicate::str::contains(
         "Invalid configuration: missing field `name`",
     ));
+
+    temp_dir.close()?;
     Ok(())
 }
 
 #[test]
 fn rtype_invalid() -> Result<(), Box<dyn Error>> {
-    let mut cmd = Command::cargo_bin(crate_name!())?;
+    let mut cmd = Command::cargo_bin("digs")?;
     cmd.arg("example.net")
         .arg("FOO")
         .arg("-c")
@@ -75,13 +96,25 @@ fn rtype_too_many() -> Result<(), Box<dyn Error>> {
 
 #[test]
 fn address_invalid() -> Result<(), Box<dyn Error>> {
+    let content = r#"
+[[servers]]
+# invalid address
+ip = "8.8.8"
+name = "Google"
+"#;
+
     let mut cmd = Command::cargo_bin(crate_name!())?;
-    cmd.arg("example.net")
-        .arg("-c")
-        .arg("tests/fixture/invalid-address.toml");
+
+    let temp_dir = assert_fs::TempDir::new()?;
+    let config = temp_dir.child("invalid.toml");
+    config.write_str(content)?;
+
+    cmd.arg("example.net").arg("-c").arg(config.to_path_buf());
     cmd.assert()
         .success()
         .stdout(predicate::str::contains("Invalid IP Adrress `8.8.8"));
+
+    temp_dir.close()?;
     Ok(())
 }
 

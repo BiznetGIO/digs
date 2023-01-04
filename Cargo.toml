@@ -35,6 +35,7 @@ features = ["suggestions", "color", "cargo", "derive"]
 cargo-husky = { version = "1", features = ["user-hooks"] }
 
 assert_cmd = "2.0"
+assert_fs = "1.0"
 predicates = "2.1"
 
 [package.metadata.binstall]
