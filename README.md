@@ -30,9 +30,8 @@ records across different machines at once is a lifesaver.
 - Prevent invalid input before querying. Such invalid records type or configuration.
 - No panics, good error handling.
 - [more faster](docs/benchmark.md) compared to previous `digs.py`.
-- Colourful output.
-- Cross-platform.
-- Single binary.
+- Fancy error message and colorful output.
+- Cross-platform and single binary.
 
 ## Usage
 
