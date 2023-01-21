@@ -47,7 +47,7 @@ ip = "9.9.9.9"
 name = "Quad9"
 ```
 
-The servers blocks can be as many as you want.
+The `servers` blocks can be as many as you want.
 
 Example commands:
 
@@ -63,7 +63,7 @@ Run `digs --help` to see more available options.
 ### From binaries
 
 The [release page](https://github.com/BiznetGIO/digs/releases) includes
-pre-compiled binaries for GNU/Linux, macOS and Windows.
+pre-compiled binaries for GNU/Linux, macOS, and Windows.
 
 ### From source
 
@@ -92,7 +92,9 @@ cargo test
 cargo install --path .
 ```
 
----
+## Contributing
+
+To learn more read the [contributing guide](docs/dev/README.md)
 
 ## Licence
 
