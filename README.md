@@ -18,19 +18,19 @@ dig many at once.
 
 ---
 
-_digs_ is a DNS command-line client that able to query many DNS servers at once.
+_digs_ is a DNS command-line client that is able to query many DNS servers at once.
 
 ## Why?
 
-We work with DNS records a lot. Having a tools that inspect multiple
+We work with DNS records a lot. Having a tool that inspects multiple
 records across different machines at once is a lifesaver.
 
 ## Features
 
-- Prevent invalid input before querying. Such invalid records type or configuration.
+- Prevent invalid input before querying, such as invalid record types or configuration.
 - No panics, good error handling.
-- [more faster](docs/benchmark.md) compared to previous `digs.py`.
-- Fancy error message and colorful output.
+- [much faster](docs/benchmark.md) compared to previous `digs.py`.
+- Fancy error messages and colorful output.
 - Cross-platform and single binary.
 
 ## Usage
@@ -47,12 +47,12 @@ ip = "9.9.9.9"
 name = "Quad9"
 ```
 
-The server can be as many as you want.
+The servers blocks can be as many as you want.
 
 Example commands:
 
 ```
-digs example.net A                    Query a domain using the configuration in current directory
+digs example.net A                    Query a domain using the configuration in the current directory
 digs example.net A -f custom.toml     ...using custom configuration
 ```
 
