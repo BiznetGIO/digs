@@ -1,7 +1,7 @@
 name: CI
 
 env:
-  MIN_SUPPORTED_RUST_VERSION: "1.66.0"
+  MIN_SUPPORTED_RUST_VERSION: "1.70.0"
 
 on: [push, pull_request]
 
@@ -17,6 +17,8 @@ jobs:
         uses: dtolnay/rust-toolchain@stable
         with:
           components: clippy, rustfmt
+
+      - uses: Swatinem/rust-cache@v2
 
       - name: Install latest just release
         uses: taiki-e/install-action@just
@@ -45,11 +47,12 @@ jobs:
         with:
           toolchain: ${{ env.MIN_SUPPORTED_RUST_VERSION }}
 
-      - name: Install latest nextest release
-        uses: taiki-e/install-action@nextest
+      - uses: Swatinem/rust-cache@v2
 
       - name: Install latest just release
         uses: taiki-e/install-action@just
+
+      - uses: taiki-e/install-action@nextest
 
       - name: Run tests
         run: just test
@@ -67,7 +70,6 @@ jobs:
           - { build: win-msvc,   os: windows-2022, target: x86_64-pc-windows-msvc      }
           - { build: win32-msvc, os: windows-2022, target: i686-pc-windows-msvc        }
           - { build: macos,      os: macos-12    , target: x86_64-apple-darwin         }
-          - { build: macos-arm,  os: macos-12    , target: aarch64-apple-darwin        }
 
     steps:
       - name: Checkout source code
@@ -77,6 +79,8 @@ jobs:
         uses: dtolnay/rust-toolchain@stable
         with:
           target: ${{ matrix.target }}
+
+      - uses: Swatinem/rust-cache@v2
 
       - name: Show version information
         shell: bash
