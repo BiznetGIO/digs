@@ -17,24 +17,21 @@ lto = true
 panic = 'abort'
 
 [dependencies]
-trust-dns-client = "0.22.0"
+trust-dns-client = "0.23.0"
 
-log = "0.4.17"
-miette = { version = "5.5", features = ["fancy"] }
+clap = { version = "4.0", features = ["suggestions", "color", "cargo", "derive"] }
+log = "0.4.20"
+miette = { version = "5.10", features = ["fancy"] }
 owo-colors = "3"
-pretty_env_logger = "0.4.0"
-serde = { version = "1.0", features = ["derive"] }
+pretty_env_logger = "0.5.0"
+serde = { version = "1.0.188", features = ["derive"] }
 thiserror = "1.0"
-toml = "0.5.10"
-
-[dependencies.clap]
-version = "4.0"
-features = ["suggestions", "color", "cargo", "derive"]
+toml = "0.5.11"
 
 [dev-dependencies]
-assert_cmd = "2.0"
-assert_fs = "1.0"
-predicates = "2.1"
+assert_cmd = "2.0.12"
+assert_fs = "1.0.13"
+predicates = "3.0.3"
 
 [package.metadata.binstall]
 pkg-url = "{ repo }/releases/download/v{ version }/{ name }-{ version}-{ target }.tar.gz"
