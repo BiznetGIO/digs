@@ -59,9 +59,9 @@ name = "Quad9"
     config.write_str(content)?;
 
     cmd.arg("example.net").arg("-c").arg(config.to_path_buf());
-    cmd.assert().failure().stderr(predicate::str::contains(
-        "Invalid configuration: missing field `name`",
-    ));
+    cmd.assert()
+        .failure()
+        .stderr(predicate::str::contains("missing field `name`"));
 
     temp_dir.close()?;
     Ok(())

@@ -40,11 +40,11 @@ where
     match toml::from_str(content) {
         Ok(config) => Ok(config),
         Err(e) => {
-            let (line, column) = &e.line_col().unwrap_or((0, 0));
+            let range = &e.span().unwrap_or(std::ops::Range { start: 0, end: 0 });
             let filename = Path::new(&filename);
             Err(Error::InvalidConfig {
                 src: NamedSource::new(filename.to_string_lossy(), content.to_owned()),
-                bad_bit: SourceOffset::from_location(content, line + 1, column + 1),
+                bad_bit: SourceOffset::from_location(content, range.start, range.end),
                 message: e.to_string(),
             })?
         }
