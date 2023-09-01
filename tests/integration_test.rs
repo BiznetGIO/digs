@@ -75,7 +75,7 @@ fn rtype_invalid() -> Result<(), Box<dyn Error>> {
         .arg("-c")
         .arg("tests/fixture/digs.toml");
     cmd.assert().failure().stderr(predicate::str::contains(
-        r#"'FOO' isn't a valid value for '[RTYPE]'"#,
+        r#"invalid value 'FOO' for '[RTYPE]'"#,
     ));
     Ok(())
 }
@@ -88,9 +88,9 @@ fn rtype_too_many() -> Result<(), Box<dyn Error>> {
         .arg("MX")
         .arg("-c")
         .arg("tests/fixture/digs.toml");
-    cmd.assert().failure().stderr(predicate::str::contains(
-        "Found argument 'MX' which wasn't expected",
-    ));
+    cmd.assert()
+        .failure()
+        .stderr(predicate::str::contains("unexpected argument 'MX' found"));
     Ok(())
 }
 

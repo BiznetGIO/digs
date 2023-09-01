@@ -19,7 +19,7 @@ panic = 'abort'
 [dependencies]
 trust-dns-client = "0.23.0"
 
-clap = { version = "4.0", features = ["suggestions", "color", "cargo", "derive"] }
+clap = { version = "4.4.2", features = ["suggestions", "color", "cargo", "derive"] }
 log = "0.4.20"
 miette = { version = "5.10", features = ["fancy"] }
 owo-colors = "3"
