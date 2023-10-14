@@ -1,9 +1,9 @@
 use std::str::FromStr;
 
-use trust_dns_client::client::{Client, SyncClient};
-use trust_dns_client::op::DnsResponse;
-use trust_dns_client::rr::{DNSClass, Name, RecordType};
-use trust_dns_client::udp::UdpClientConnection;
+use hickory_client::client::{Client, SyncClient};
+use hickory_client::op::DnsResponse;
+use hickory_client::rr::{DNSClass, Name, RecordType};
+use hickory_client::udp::UdpClientConnection;
 
 use crate::error::Error;
 

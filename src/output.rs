@@ -1,9 +1,9 @@
 use std::io::{self, Write};
 use std::path::PathBuf;
 
+use hickory_client::rr::{Record, RecordType};
 use log::trace;
 use owo_colors::OwoColorize;
-use trust_dns_client::rr::{Record, RecordType};
 
 use crate::error::Error;
 use crate::{config, dns};

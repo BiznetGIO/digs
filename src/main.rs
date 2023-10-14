@@ -1,5 +1,5 @@
+use hickory_client::rr::RecordType;
 use std::process;
-use trust_dns_client::rr::RecordType;
 
 use clap::Parser;
 use miette::Result;

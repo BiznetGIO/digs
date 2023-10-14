@@ -17,21 +17,21 @@ lto = true
 panic = 'abort'
 
 [dependencies]
-trust-dns-client = "0.23.0"
+hickory-client = "0.24.0"
 
-clap = { version = "4.4.2", features = ["suggestions", "color", "cargo", "derive"] }
+clap = { version = "4.4.6", features = ["suggestions", "color", "cargo", "derive"] }
 log = "0.4.20"
 miette = { version = "5.10", features = ["fancy"] }
 owo-colors = "3"
 pretty_env_logger = "0.5.0"
-serde = { version = "1.0.188", features = ["derive"] }
+serde = { version = "1.0.189", features = ["derive"] }
 thiserror = "1.0"
-toml = "0.7.6"
+toml = "0.7.8"
 
 [dev-dependencies]
 assert_cmd = "2.0.12"
 assert_fs = "1.0.13"
-predicates = "3.0.3"
+predicates = "3.0.4"
 
 [package.metadata.binstall]
 pkg-url = "{ repo }/releases/download/v{ version }/{ name }-{ version}-{ target }.tar.gz"
