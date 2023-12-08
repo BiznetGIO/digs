@@ -22,7 +22,7 @@ fn get_address(nameserver: &str) -> Result<std::net::SocketAddr, Error> {
     match address {
         Ok(addr) => Ok(addr),
         Err(_) => Err(Error::InvalidArgument(format!(
-            "Invalid IP Adrress `{}`",
+            "Invalid IP Address `{}`",
             &nameserver
         ))),
     }

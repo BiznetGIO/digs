@@ -112,7 +112,7 @@ name = "Google"
     cmd.arg("example.net").arg("-c").arg(config.to_path_buf());
     cmd.assert()
         .success()
-        .stdout(predicate::str::contains("Invalid IP Adrress `8.8.8"));
+        .stdout(predicate::str::contains("Invalid IP Address `8.8.8"));
 
     temp_dir.close()?;
     Ok(())
