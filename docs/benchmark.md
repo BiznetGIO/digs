@@ -91,8 +91,8 @@ Benchmark #1: digs example.net A
 
 Using `digs.1.toml` as input:
 
-| Tool      | Command            | Time (mean) |
-| --------- | ------------------ | ----------- |
+| Tool       | Command            | Time (mean) |
+| ---------- | ------------------ | ----------- |
 | digs.rs 🦀 | `digs example.net` | **304.7ms** |
 | digs.py 🐍 | `digs example.net` | **507.2ms** |
 
@@ -113,7 +113,7 @@ Benchmark #1: digs example.net A -f digs.2.yaml
   Range (min … max):    1.356 s …  1.960 s    10 runs
 ```
 
-| Tool      | Command            | Time (mean) |
-| --------- | ------------------ | ----------- |
+| Tool       | Command            | Time (mean) |
+| ---------- | ------------------ | ----------- |
 | digs.rs 🦀 | `digs example.net` | **1.321s**  |
 | digs.py 🐍 | `digs example.net` | **1.546s**  |
