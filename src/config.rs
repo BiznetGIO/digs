@@ -1,6 +1,6 @@
 use std::{
     ffi::OsStr,
-    fs, net,
+    fs,
     path::{Path, PathBuf},
 };
 
@@ -14,7 +14,9 @@ pub struct Config {
 
 #[derive(Debug, Deserialize)]
 pub struct Server {
-    pub ip: net::IpAddr,
+    // I can't use `SocketAddr` directly here if I wanted
+    // to make the port optional.
+    pub address: String,
     pub name: String,
 }
 

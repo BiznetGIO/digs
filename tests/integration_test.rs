@@ -41,14 +41,14 @@ fn config_invalid() -> Result<(), Box<dyn Error>> {
     let content = r#"
 [[servers]]
 # missing name
-ip = "1.1.1.1"
+address = "1.1.1.1"
 
 [[servers]]
-ip = "8.8.8.8"
+address = "8.8.8.8"
 name = "Google"
 
 [[servers]]
-ip = "9.9.9.9"
+address = "9.9.9.9"
 name = "Quad9"
 "#;
 
@@ -99,7 +99,7 @@ fn address_invalid() -> Result<(), Box<dyn Error>> {
     let content = r#"
 [[servers]]
 # invalid address
-ip = "8.8.8"
+address = "8.8.8"
 name = "Google"
 "#;
 
@@ -112,7 +112,7 @@ name = "Google"
     cmd.arg("example.net").arg("-c").arg(config.to_path_buf());
     cmd.assert()
         .success()
-        .stdout(predicate::str::contains("Invalid IP Address `8.8.8"));
+        .stdout(predicate::str::contains("invalid socket address syntax"));
 
     temp_dir.close()?;
     Ok(())

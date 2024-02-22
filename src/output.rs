@@ -22,7 +22,7 @@ impl Printer {
     }
     pub fn print(&self) -> Result<(), crate::Error> {
         for server in &self.config.servers {
-            let response = dns::query(&self.domain, self.record_type, &server.ip);
+            let response = dns::query(&self.domain, self.record_type, &server.address);
             trace!("Response -> {:?}", response);
 
             stdout(&server.name.to_string());

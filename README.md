@@ -39,11 +39,11 @@ Prepare a configuration file that should look like this:
 
 ```toml
 [[servers]]
-ip = "8.8.8.8"
+address = "8.8.8.8"
 name = "Google"
 
 [[servers]]
-ip = "9.9.9.9"
+address = "9.9.9.9:54" # Custom port, default: 53
 name = "Quad9"
 ```
 

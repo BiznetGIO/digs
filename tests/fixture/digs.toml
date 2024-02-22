@@ -1,7 +1,7 @@
 [[servers]]
-ip = "8.8.8.8"
+address = "8.8.8.8"
 name = "Google"
 
 [[servers]]
-ip = "9.9.9.9"
+address = "9.9.9.9:53"
 name = "Quad9"

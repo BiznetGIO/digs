@@ -1,4 +1,4 @@
-use std::{net, str::FromStr};
+use std::str::FromStr;
 
 use hickory_client::client::{Client, SyncClient};
 use hickory_client::op::DnsResponse;
@@ -7,27 +7,21 @@ use hickory_client::udp::UdpClientConnection;
 
 use crate::error::Error;
 
-pub fn query(
-    domain: &str,
-    rtype: RecordType,
-    nameserver: &net::IpAddr,
-) -> Result<DnsResponse, Error> {
-    let address = get_address(nameserver)?;
-    let conn = UdpClientConnection::new(address)?;
+pub fn query(domain: &str, rtype: RecordType, address: &str) -> Result<DnsResponse, Error> {
+    let socket_address = parse_address(address)?;
+    let conn = UdpClientConnection::new(socket_address)?;
     let client = SyncClient::new(conn);
 
     let name = Name::from_str(&format!("{}.", domain))?;
     Ok(client.query(&name, DNSClass::IN, rtype)?)
 }
 
-/// Parse address string
-fn get_address(nameserver: &net::IpAddr) -> Result<std::net::SocketAddr, Error> {
-    let address = format!("{}:53", nameserver).parse::<std::net::SocketAddr>();
-    match address {
-        Ok(addr) => Ok(addr),
-        Err(_) => Err(Error::InvalidArgument(format!(
-            "Invalid IP Address `{}`",
-            &nameserver
-        ))),
+/// Parse address string into `SocketAddr`
+fn parse_address(address: &str) -> Result<std::net::SocketAddr, Error> {
+    if address.contains(':') {
+        Ok(address.parse::<std::net::SocketAddr>()?)
+    } else {
+        // Use default port
+        Ok(format!("{address}:53").parse::<std::net::SocketAddr>()?)
     }
 }
