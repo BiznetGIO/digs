@@ -1,6 +1,7 @@
 use std::path::PathBuf;
 
 use clap::{Parser, ValueEnum};
+use hickory_client::rr;
 
 #[derive(Parser)]
 #[command(
@@ -23,7 +24,7 @@ pub struct Opts {
     pub config: PathBuf,
 }
 
-#[derive(Copy, Clone, PartialEq, Eq, PartialOrd, Ord, ValueEnum)]
+#[derive(Clone, ValueEnum)]
 #[value(rename_all = "UPPER")]
 pub enum RecordType {
     A,
@@ -33,6 +34,20 @@ pub enum RecordType {
     NS,
     SOA,
     TXT,
+}
+
+impl Opts {
+    pub fn rtype(&self) -> rr::RecordType {
+        match self.rtype {
+            RecordType::A => rr::RecordType::A,
+            RecordType::AAAA => rr::RecordType::AAAA,
+            RecordType::CNAME => rr::RecordType::CNAME,
+            RecordType::MX => rr::RecordType::MX,
+            RecordType::NS => rr::RecordType::NS,
+            RecordType::SOA => rr::RecordType::SOA,
+            RecordType::TXT => rr::RecordType::TXT,
+        }
+    }
 }
 
 fn is_domain(domain: &str) -> Result<String, String> {
