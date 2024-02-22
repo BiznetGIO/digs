@@ -8,6 +8,7 @@ exclude = ["/README.md"]
 keywords = ["cli", "dns", "dig"]
 license = "GPL-3.0-only"
 repository = "https://github.com/BiznetGIO/digs"
+rust-version = "1.76.0"
 description = "digs many at once"
 
 [profile.release]
