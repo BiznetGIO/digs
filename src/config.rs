@@ -7,32 +7,30 @@ use std::{
 use miette::{NamedSource, Result, SourceOffset};
 use serde::Deserialize;
 
-use crate::error::Error;
+#[derive(Debug, Deserialize)]
+pub struct Config {
+    pub servers: Vec<Server>,
+}
 
-#[derive(Deserialize, Debug)]
+#[derive(Debug, Deserialize)]
 pub struct Server {
     pub ip: String,
     pub name: String,
 }
 
-#[derive(Deserialize, Debug)]
-pub struct Config {
-    pub servers: Vec<Server>,
-}
-
-pub fn read<P>(filename: P) -> Result<Config, Error>
+pub fn read<P>(filename: P) -> Result<Config, crate::Error>
 where
     P: AsRef<Path>,
     P: AsRef<OsStr>,
 {
-    let file_content = fs::read_to_string(&filename).map_err(|_| Error::ConfigNotFound {
+    let file_content = fs::read_to_string(&filename).map_err(|_| crate::Error::ConfigNotFound {
         path: PathBuf::from(&filename),
     })?;
     deserialize(&file_content, &filename)
 }
 
 /// Deserialize config intro struct.
-fn deserialize<P>(content: &str, filename: P) -> Result<Config, Error>
+fn deserialize<P>(content: &str, filename: P) -> Result<Config, crate::Error>
 where
     P: AsRef<Path>,
     P: AsRef<OsStr>,
@@ -42,7 +40,7 @@ where
         Err(e) => {
             let range = &e.span().unwrap_or(std::ops::Range { start: 0, end: 0 });
             let filename = Path::new(&filename);
-            Err(Error::InvalidConfig {
+            Err(crate::Error::InvalidConfig {
                 src: NamedSource::new(filename.to_string_lossy(), content.to_owned()),
                 bad_bit: SourceOffset::from_location(content, range.start, range.end),
                 message: e.to_string(),

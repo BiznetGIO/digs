@@ -3,7 +3,7 @@ use std::path::PathBuf;
 use miette::{Diagnostic, NamedSource, SourceOffset};
 use thiserror::Error;
 
-/// all possible errors returned by the app.
+/// All possible errors returned by the app.
 #[derive(Debug, Error, Diagnostic)]
 pub enum Error {
     #[error("{0}")]
