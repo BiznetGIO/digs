@@ -1,6 +1,6 @@
 use std::{
     ffi::OsStr,
-    fs,
+    fs, net,
     path::{Path, PathBuf},
 };
 
@@ -14,9 +14,8 @@ pub struct Config {
 
 #[derive(Debug, Deserialize)]
 pub struct Server {
-    // I can't use `SocketAddr` directly here if I wanted
-    // to make the port optional.
-    pub address: String,
+    #[serde(deserialize_with = "deserialize_address")]
+    pub address: net::SocketAddr,
     pub name: String,
 }
 
@@ -48,5 +47,22 @@ where
                 message: e.to_string(),
             })?
         }
+    }
+}
+
+/// Parse address string into `SocketAddr`
+fn deserialize_address<'de, D>(deserializer: D) -> Result<net::SocketAddr, D::Error>
+where
+    D: serde::Deserializer<'de>,
+{
+    let address: String = Deserialize::deserialize(deserializer)?;
+
+    if address.contains(':') {
+        address.parse().map_err(serde::de::Error::custom)
+    } else {
+        // Use default port
+        format!("{address}:53")
+            .parse()
+            .map_err(serde::de::Error::custom)
     }
 }

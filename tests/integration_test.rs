@@ -111,8 +111,8 @@ name = "Google"
 
     cmd.arg("example.net").arg("-c").arg(config.to_path_buf());
     cmd.assert()
-        .success()
-        .stdout(predicate::str::contains("invalid socket address syntax"));
+        .failure()
+        .stderr(predicate::str::contains("invalid socket address syntax"));
 
     temp_dir.close()?;
     Ok(())
