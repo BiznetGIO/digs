@@ -4,6 +4,8 @@ alias d := dev
 alias f := fmt
 alias l := lint
 alias t := test
+alias c := comply
+alias k := check
 
 # List available commands.
 _default:
