@@ -1,6 +1,6 @@
 use std::{
     ffi::OsStr,
-    fs,
+    fs, net,
     path::{Path, PathBuf},
 };
 
@@ -14,7 +14,7 @@ pub struct Config {
 
 #[derive(Debug, Deserialize)]
 pub struct Server {
-    pub ip: String,
+    pub ip: net::IpAddr,
     pub name: String,
 }
 

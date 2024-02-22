@@ -25,7 +25,7 @@ impl Printer {
             let response = dns::query(&self.domain, self.record_type, &server.ip);
             trace!("Response -> {:?}", response);
 
-            writeln!(io::stdout(), "{}", server.name).ok();
+            stdout(&server.name.to_string());
             match response {
                 Err(e) => {
                     stdout(&format!("  {}", e.to_string().red()));
