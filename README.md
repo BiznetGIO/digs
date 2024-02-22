@@ -52,8 +52,8 @@ The `servers` blocks can be as many as you want.
 Example commands:
 
 ```
-digs example.net A                    Query a domain using the configuration in the current directory
-digs example.net A -f custom.toml     ...using custom configuration
+digs example.net A                         Query a domain using the configuration in the current directory
+digs example.net A --config custom.toml    ...using custom configuration
 ```
 
 Run `digs --help` to see more available options.
