@@ -22,7 +22,7 @@ hickory-client = "0.24.0"
 
 clap = { version = "4.5.1", features = ["suggestions", "color", "cargo", "derive"] }
 log = "0.4.20"
-miette = { version = "5.10", features = ["fancy"] }
+miette = { version = "7.1.0", features = ["fancy"] }
 owo-colors = "4.0.0"
 serde = { version = "1.0.197", features = ["derive"] }
 thiserror = "1.0.57"
