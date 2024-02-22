@@ -98,4 +98,4 @@ To learn more read the [contributing guide](docs/dev/README.md)
 
 ## Licence
 
-digs source code is licensed under the [GPLv3](https://choosealicense.com/licenses/gpl-3.0/).
+digs source code is licensed under the [MIT](https://choosealicense.com/licenses/mit/).
