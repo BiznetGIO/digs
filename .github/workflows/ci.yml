@@ -69,12 +69,14 @@ jobs:
           rustc --version
           cargo --version
 
-      - name: Install musl-tools
-        if: matrix.target == 'x86_64-unknown-linux-musl'
+      - name: Install dependencies
+        shell: bash
         run: |
-          sudo apt-get update
-          sudo apt-get install -y --no-install-recommends \
-            --allow-unauthenticated musl-tools
+          if [[ "${{ matrix.build }}" = *"-musl" ]]; then
+            sudo apt-get update
+            sudo apt-get install -y --no-install-recommends \
+              --allow-unauthenticated musl-tools
+          fi
 
       - name: Build
         run: cargo build --release --locked --target ${{ matrix.target }}
