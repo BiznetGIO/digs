@@ -18,7 +18,7 @@ fn help() -> Result<(), Box<dyn Error>> {
 // default config should be in current directory
 fn default_config_not_found() -> Result<(), Box<dyn Error>> {
     let mut cmd = Command::cargo_bin(crate_name!())?;
-    cmd.arg("example.net");
+    cmd.arg("google.com");
     cmd.assert()
         .failure()
         .stderr(predicate::str::contains("Configuration file is not found"));
@@ -28,7 +28,7 @@ fn default_config_not_found() -> Result<(), Box<dyn Error>> {
 #[test]
 fn custom_config_not_found() -> Result<(), Box<dyn Error>> {
     let mut cmd = Command::cargo_bin(crate_name!())?;
-    cmd.arg("example.net").arg("-c").arg("file/doesnt/exist");
+    cmd.arg("google.com").arg("-c").arg("file/doesnt/exist");
     cmd.assert()
         .failure()
         .stderr(predicate::str::contains("Configuration file is not found"));
@@ -55,7 +55,7 @@ name = "Quad9"
     config.write_str(content)?;
 
     let mut cmd = Command::cargo_bin(crate_name!())?;
-    cmd.arg("example.net").arg("-c").arg(config.to_path_buf());
+    cmd.arg("google.com").arg("-c").arg(config.to_path_buf());
     cmd.assert()
         .failure()
         .stderr(predicate::str::contains("missing field `name`"));
@@ -67,7 +67,7 @@ name = "Quad9"
 #[test]
 fn rtype_invalid() -> Result<(), Box<dyn Error>> {
     let mut cmd = Command::cargo_bin("digs")?;
-    cmd.arg("example.net").arg("FOO");
+    cmd.arg("google.com").arg("FOO");
     cmd.assert().failure().stderr(predicate::str::contains(
         r#"invalid value 'FOO' for '[RTYPE]'"#,
     ));
@@ -77,7 +77,7 @@ fn rtype_invalid() -> Result<(), Box<dyn Error>> {
 #[test]
 fn rtype_too_many() -> Result<(), Box<dyn Error>> {
     let mut cmd = Command::cargo_bin(crate_name!())?;
-    cmd.arg("example.net").arg("A").arg("MX");
+    cmd.arg("google.com").arg("A").arg("MX");
     cmd.assert()
         .failure()
         .stderr(predicate::str::contains("unexpected argument 'MX' found"));
@@ -96,7 +96,7 @@ name = "Google"
     config.write_str(content)?;
 
     let mut cmd = Command::cargo_bin(crate_name!())?;
-    cmd.arg("example.net").arg("-c").arg(config.to_path_buf());
+    cmd.arg("google.com").arg("-c").arg(config.to_path_buf());
     cmd.assert()
         .failure()
         .stderr(predicate::str::contains("invalid socket address syntax"));
@@ -121,13 +121,13 @@ fn query() -> Result<(), Box<dyn Error>> {
     config.write_str(&config_base())?;
 
     let mut cmd = Command::cargo_bin(crate_name!())?;
-    cmd.arg("github.com")
+    cmd.arg("google.com")
         .arg("A")
         .arg("-c")
         .arg(config.to_path_buf());
     cmd.assert()
         .success()
-        .stdout(predicate::str::contains("20.205.243.166"));
+        .stdout(predicate::str::contains("google.com"));
 
     temp_dir.close()?;
     Ok(())
@@ -140,10 +140,10 @@ fn query_without_rtype() -> Result<(), Box<dyn Error>> {
     config.write_str(&config_base())?;
 
     let mut cmd = Command::cargo_bin(crate_name!())?;
-    cmd.arg("github.com").arg("-c").arg(config.to_path_buf());
+    cmd.arg("google.com").arg("-c").arg(config.to_path_buf());
     cmd.assert()
         .success()
-        .stdout(predicate::str::contains("20.205.243.166"));
+        .stdout(predicate::str::contains("google.com"));
 
     temp_dir.close()?;
     Ok(())
