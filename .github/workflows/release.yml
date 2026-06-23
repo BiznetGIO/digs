@@ -66,7 +66,7 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           CHANGELOG: ${{ needs.changelog.outputs.release_body }}
-        run: ./mise/tasks/github-release
+        run: .mise/tasks/github-release
 
   release:
     name: Release ${{ matrix.build }}
@@ -122,7 +122,7 @@ jobs:
           APP_NAME: ${{ github.event.repository.name }}
           REPO_NAME: ${{ github.event.repository.name }}
           TARGET: ${{ matrix.target }}
-        run: ./mise/tasks/package
+        run: .mise/tasks/package
 
       - name: Upload release asset
         shell: bash
