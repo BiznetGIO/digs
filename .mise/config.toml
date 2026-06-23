@@ -1,0 +1,117 @@
+[tools]
+"cargo:dprint" = "latest"
+"cargo:git-cliff" = "latest"
+"cargo:bacon" = "latest"
+"cargo:typos-cli" = "latest"
+"cargo:cargo-nextest" = "latest"
+"cargo:cargo-edit" = "latest"
+"cargo:cargo-outdated" = "latest"
+"cargo:cargo-udeps" = "latest"
+"cargo:cargo-audit" = "latest"
+"cargo:cargo-release" = "latest"
+"shellcheck" = "latest"
+
+[tasks.setup]
+hide = true
+confirm = "⚠️ This command will alter your system. Continue?"
+description = "Setup the project"
+depends = ["hooks"]
+
+[tasks.audit]
+# Extras, deep, thorough checks. Should be run locally.
+hide = true
+description = "Exhaustive quality check"
+depends = ["check", "audit:*"]
+
+[tasks.fix]
+# Apply automatic fixes, then check.
+# Intended for use before commit or push.
+description = "Enforce rules"
+depends = ["fmt", "check"]
+
+[tasks.check]
+# Quality check. Primarily used in CI.
+hide = true
+description = "Quality check"
+depends = ["lint", "test"]
+
+[tasks.lint]
+# Minimal, fast feedback checks.
+hide = true
+description = "Lint"
+run = [
+  # format
+  "cargo fmt --all -- --check",
+  "dprint check",
+  # typos
+  "typos",
+  # code
+  "cargo clippy --all-targets --all-features",
+]
+
+[tasks.dev]
+alias = "d"
+interactive = true
+description = "Develop the app"
+run = ["bacon", "mise run fix"]
+
+[tasks.fmt]
+hide = true
+description = "Format the codebase"
+run = [
+  "cargo fmt --all",
+  "dprint fmt",
+]
+
+[tasks.test]
+hide = true
+description = "Test the codebase"
+run = "cargo nextest run --all-features"
+
+[tasks."test:doc"]
+hide = true
+description = "Test the documentation"
+run = "cargo test --doc --all-features"
+
+[tasks."test:ci"]
+# I don't need faster setup in CI
+hide = true
+description = "Test the documentation"
+run = "cargo test --all-features"
+
+[tasks.up]
+hide = true
+description = "Upgrade dependencies"
+run = [
+  "cargo upgrade --incompatible --recursive --verbose",
+  "cargo update",
+  "dprint config update",
+]
+
+[tasks.release]
+hide = true
+description = "Create a new release. Example: mise run release -- minor"
+# extra careful
+depends = "check"
+run = "cargo-release release $1 --execute"
+
+[tasks."release:prepare"]
+hide = true
+description = "Prepare release hooks"
+depends = ["fix", "check"]
+run = "git-cliff --config .cliff.toml --output CHANGELOG.md --tag $1"
+
+[tasks."audit:extras"]
+hide = true
+description = "Dependency analysis"
+run = [
+  # CI
+  "pnpx actions-up",
+  "actionlint",
+  "zizmor .github/workflows/*",
+
+  # Dependencies
+  "cargo +nightly udeps --all-targets",
+  "cargo audit",
+  "cargo outdated --root-deps-only",
+]

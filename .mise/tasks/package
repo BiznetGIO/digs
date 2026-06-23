@@ -1,0 +1,61 @@
+#!/usr/bin/env bash
+#MISE description="Build a release archive for a single target"
+#MISE hide=true
+
+#
+# Build a release archive containing the *compiled* binary for one target.
+#
+# - Locates target/<target>/release/<bin> (handles the Windows .exe suffix)
+# - Stages the binary plus docs into <name>-<version>-<target>/
+# - Produces a .zip on Windows, .tar.gz elsewhere
+# - Emits PKG_NAME / PKG_PATH as GitHub Actions outputs (when run in CI)
+
+set -euo pipefail
+
+# Validate required inputs up front.
+: "${APP_NAME:?APP_NAME is required}"
+: "${REPO_NAME:?REPO_NAME is required}"
+: "${RELEASE_VERSION:?RELEASE_VERSION is required}"
+: "${TARGET:?TARGET is required}"
+
+# Resolve the compiled binary path (Windows gets a .exe suffix).
+BIN_NAME="$APP_NAME"
+[[ "$TARGET" == *windows* ]] && BIN_NAME="${APP_NAME}.exe"
+BIN_PATH="target/${TARGET}/release/${BIN_NAME}"
+if [[ ! -f "$BIN_PATH" ]]; then
+  echo "error: compiled binary not found at ${BIN_PATH}" >&2
+  exit 1
+fi
+
+# Derive archive naming (target is part of the name to avoid asset collisions).
+PKG_BASENAME="${REPO_NAME}-${RELEASE_VERSION}-${TARGET}"
+PKG_STAGING="/tmp/package"
+ARCHIVE_DIR="${PKG_STAGING}/${PKG_BASENAME}"
+
+# Stage a clean directory with the binary and any docs that exist.
+rm -rf "$ARCHIVE_DIR"
+mkdir -p "$ARCHIVE_DIR"
+cp "$BIN_PATH" "$ARCHIVE_DIR/"
+for extra in README.md CHANGELOG.md LICENSE LICENSE-MIT LICENSE-APACHE; do
+  [[ -f "$extra" ]] && cp "$extra" "$ARCHIVE_DIR/"
+done
+
+# Compress: zip for Windows consumers, tar.gz for everyone else.
+if [[ "$TARGET" == *windows* ]]; then
+  PKG_NAME="${PKG_BASENAME}.zip"
+  ( cd "$PKG_STAGING" && 7z a -bso0 "$PKG_NAME" "$PKG_BASENAME" )
+else
+  PKG_NAME="${PKG_BASENAME}.tar.gz"
+  tar -czf "${PKG_STAGING}/${PKG_NAME}" -C "$PKG_STAGING" "$PKG_BASENAME"
+fi
+PKG_PATH="${PKG_STAGING}/${PKG_NAME}"
+
+# Expose outputs to later workflow steps when running under GitHub Actions.
+if [[ -n "${GITHUB_OUTPUT:-}" ]]; then
+  {
+    echo "PKG_NAME=${PKG_NAME}"
+    echo "PKG_PATH=${PKG_PATH}"
+  } >> "$GITHUB_OUTPUT"
+fi
+
+echo "Packaged ${PKG_PATH}"

@@ -1,0 +1,3 @@
+#!/bin/sh
+
+mise run lint

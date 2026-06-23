@@ -1,0 +1,34 @@
+#!/usr/bin/env bash
+#MISE description="Create the GitHub release"
+#MISE hide=true
+
+# Create the GitHub release exactly once, with the changelog as notes.
+# This only creates an empty release. Assets are uploaded separately by each build matrix leg.
+
+set -euo pipefail
+
+# Validate required inputs up front.
+: "${RELEASE_VERSION:?RELEASE_VERSION is required}"
+: "${CHANGELOG:?CHANGELOG is required}"
+
+# Assemble optional flags (e.g. --prerelease) without tripping `set -u`.
+RELEASE_ARGS=()
+[[ -n "${PRERELEASE_FLAG:-}" ]] && RELEASE_ARGS+=("$PRERELEASE_FLAG")
+
+# Write the changelog to a temp file so gh can consume it as --notes-file.
+CHANGELOG_FILE="$(mktemp)"
+trap 'rm -f "$CHANGELOG_FILE"' EXIT
+printf "%s\n" "$CHANGELOG" > "$CHANGELOG_FILE"
+
+# If the release already exists, update it; otherwise, create it.
+if gh release view "$RELEASE_VERSION" >/dev/null 2>&1; then
+  gh release edit "$RELEASE_VERSION" \
+    --title "$RELEASE_VERSION" \
+    --notes-file "$CHANGELOG_FILE" \
+    "${RELEASE_ARGS[@]}"
+else
+  gh release create "$RELEASE_VERSION" \
+    --title "$RELEASE_VERSION" \
+    --notes-file "$CHANGELOG_FILE" \
+    "${RELEASE_ARGS[@]}"
+fi

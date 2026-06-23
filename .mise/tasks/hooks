@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+#MISE description="Setup Git hooks"
+#MISE hide=true
+
+set -euo pipefail
+shopt -s nullglob
+
+# Resolve the real hooks dir (handles worktrees/submodules) and ensure it exists.
+hooks_dir="$(git rev-parse --git-path hooks)"
+mkdir -p "$hooks_dir"
+
+for hook in .hooks/*; do
+    ln -sf "$(realpath "$hook")" "$hooks_dir/$(basename "$hook")"
+done

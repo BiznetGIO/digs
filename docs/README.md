@@ -1,4 +1,4 @@
-# Contributing Guide
+# Guide
 
 ## Logging
 
@@ -7,6 +7,11 @@ You can enable logging by using `DIGS_DEBUG=trace` as an environment variable.
 ## Commit Message Format
 
 This repo is using [Agular's commit message format][commit-message]
+
+## Release Checklist
+
+- Run `mise release-check <level>`. Such as `mise release-check minor`.
+- If everything is okay, Run `mise release <level>`.
 
 ## Release Process
 
