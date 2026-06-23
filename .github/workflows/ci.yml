@@ -20,12 +20,13 @@ jobs:
           install: false
           cache: true
 
+      # Install required tools
       - uses: cargo-bins/cargo-binstall@732870f031d2fb36309d0deaf36abcc704a7be65 # v1.20.1
-
-      - name: Install required tools
-        run: mise install cargo:dprint cargo:typos-cli #  via binstall
+      - run: mise install cargo:dprint cargo:typos-cli #  via binstall
 
       - name: Quality Check
+        env:
+          MISE_TASK_RUN_AUTO_INSTALL: false
         run: |
           mise run lint
           mise run test:ci
