@@ -1,7 +1,7 @@
 use std::path::PathBuf;
 
 use clap::{Parser, ValueEnum};
-use hickory_client::rr;
+use hickory_client::proto::rr;
 
 #[derive(Parser)]
 #[command(

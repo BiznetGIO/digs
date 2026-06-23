@@ -3,12 +3,12 @@ name = "digs"
 version = "0.4.2"
 authors = ["azzamsa <azzam@biznetgio.com>"]
 categories = ["command-line-utilities"]
-edition = "2018"
+edition = "2024"
 exclude = ["/README.md"]
 keywords = ["cli", "dns", "dig"]
 license = "MIT"
 repository = "https://github.com/BiznetGIO/digs"
-rust-version = "1.78.0"
+rust-version = "1.96.0"
 description = "digs many at once"
 
 [profile.release]
@@ -18,20 +18,21 @@ lto = true
 panic = 'abort'
 
 [dependencies]
-hickory-client = "0.24.1"
+hickory-client = "0.25.2"
 
-clap = { version = "4.5.7", features = ["suggestions", "color", "cargo", "derive"] }
-log = "0.4.21"
-miette = { version = "7.2.0", features = ["fancy"] }
-owo-colors = "4.0.0"
-serde = { version = "1.0.203", features = ["derive"] }
-thiserror = "1.0.61"
-toml = "0.8.14"
+clap = { version = "4.6.1", features = ["suggestions", "color", "cargo", "derive"] }
+log = "0.4.33"
+miette = { version = "7.6.0", features = ["fancy"] }
+owo-colors = "4.3.0"
+serde = { version = "1.0.228", features = ["derive"] }
+thiserror = "2.0.18"
+tokio = "1.52.3"
+toml = "1.1.2"
 
 [dev-dependencies]
-assert_cmd = "2.0.14"
-assert_fs = "1.1.1"
-predicates = "3.1.0"
+assert_cmd = "2.2.2"
+assert_fs = "1.1.4"
+predicates = "3.1.4"
 
 [package.metadata.binstall]
 pkg-url = "{ repo }/releases/download/v{ version }/{ name }-{ version}-{ target }.tar.gz"

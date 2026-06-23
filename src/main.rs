@@ -5,8 +5,9 @@ use miette::Result;
 
 use digs::{cli::Opts, config, config::Config, exit_codes::ExitCode, output, output::Printer};
 
-fn main() {
-    let result = run();
+#[tokio::main]
+async fn main() {
+    let result = run().await;
     match result {
         Ok(exit_code) => {
             process::exit(exit_code.into());
@@ -18,14 +19,14 @@ fn main() {
     }
 }
 
-fn run() -> Result<ExitCode> {
+async fn run() -> Result<ExitCode> {
     let opts = Opts::parse();
     let rtype = opts.rtype();
     let domain = opts.domain.clone();
     let config = construct_config(opts)?;
 
     let printer = Printer::new(domain, rtype, config);
-    printer.print()?;
+    printer.print().await?;
 
     Ok(ExitCode::Success)
 }

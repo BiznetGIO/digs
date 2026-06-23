@@ -41,14 +41,14 @@ impl std::convert::From<std::io::Error> for Error {
     }
 }
 
-impl std::convert::From<hickory_client::error::ClientError> for Error {
-    fn from(err: hickory_client::error::ClientError) -> Self {
+impl std::convert::From<hickory_client::ClientError> for Error {
+    fn from(err: hickory_client::ClientError) -> Self {
         Self::InvalidArgument(err.to_string())
     }
 }
 
-impl std::convert::From<hickory_client::proto::error::ProtoError> for Error {
-    fn from(err: hickory_client::proto::error::ProtoError) -> Self {
+impl std::convert::From<hickory_client::proto::ProtoError> for Error {
+    fn from(err: hickory_client::proto::ProtoError) -> Self {
         Self::InvalidArgument(err.to_string())
     }
 }

@@ -1,6 +1,6 @@
 use std::io::{self, Write};
 
-use hickory_client::rr;
+use hickory_client::proto::rr;
 use log::trace;
 use owo_colors::OwoColorize;
 
@@ -20,9 +20,9 @@ impl Printer {
             config,
         }
     }
-    pub fn print(&self) -> Result<(), crate::Error> {
+    pub async fn print(&self) -> Result<(), crate::Error> {
         for server in &self.config.servers {
-            let response = dns::query(&self.domain, self.record_type, server.address);
+            let response = dns::query(&self.domain, self.record_type, server.address).await;
             trace!("Response -> {:?}", response);
 
             stdout(&server.name.to_string());
@@ -52,10 +52,8 @@ impl Printer {
     fn print_record(record: &rr::Record) {
         let record_type = record.record_type().to_string();
         let name = record.name().to_string();
-        let rdata = match record.data() {
-            Some(rdata) => rdata.to_string(),
-            None => "".to_string(),
-        };
+        let rdata = record.data().to_string();
+        let rdata = rdata.bold();
         let rdata = rdata.bold();
         stdout(&format!(
             "  {} {} {}",
