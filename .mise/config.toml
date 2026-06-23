@@ -95,6 +95,12 @@ description = "Create a new release. Example: mise run release -- minor"
 depends = "check"
 run = "cargo-release release $1 --execute"
 
+[tasks."release:dryrun"]
+hide = true
+description = "Dry run a new release. Example: mise run release:dryrun -- minor"
+depends = "check"
+run = "cargo-release release $1"
+
 [tasks."release:prepare"]
 hide = true
 description = "Prepare release hooks"

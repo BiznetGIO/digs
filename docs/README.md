@@ -10,7 +10,7 @@ This repo is using [Agular's commit message format][commit-message]
 
 ## Release Checklist
 
-- Run `mise release-check <level>`. Such as `mise release-check minor`.
+- Run `mise release:dryrun <level>`. Such as `mise release:dryrun minor`.
 - If everything is okay, Run `mise release <level>`.
 
 ## Release Process

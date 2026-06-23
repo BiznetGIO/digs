@@ -44,4 +44,4 @@ sign-commit = true
 sign-tag = true
 tag-message = "v{{version}}"
 pre-release-commit-message = "v{{version}}"
-pre-release-hook = ["just", "_release-prepare", "{{version}}"]
+pre-release-hook = ["mise", "release:prepare", "{{version}}"]
