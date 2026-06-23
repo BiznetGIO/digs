@@ -1,14 +1,14 @@
 use std::{error::Error, process::Command};
 
-use assert_cmd::{crate_name, prelude::*};
-use assert_fs::{fixture::ChildPath, prelude::*, TempDir};
+use assert_cmd::{pkg_name, prelude::*};
+use assert_fs::{TempDir, fixture::ChildPath, prelude::*};
 use predicates::prelude::*;
 
 #[test]
 fn help() -> Result<(), Box<dyn Error>> {
-    let mut cmd = Command::cargo_bin(crate_name!())?;
-    cmd.arg("-h");
-    cmd.assert()
+    app()
+        .arg("-h")
+        .assert()
         .success()
         .stdout(predicate::str::contains("dig many at once"));
     Ok(())
@@ -17,9 +17,9 @@ fn help() -> Result<(), Box<dyn Error>> {
 #[test]
 // default config should be in current directory
 fn default_config_not_found() -> Result<(), Box<dyn Error>> {
-    let mut cmd = Command::cargo_bin(crate_name!())?;
-    cmd.arg("google.com");
-    cmd.assert()
+    app()
+        .arg("google.com")
+        .assert()
         .failure()
         .stderr(predicate::str::contains("Configuration file is not found"));
     Ok(())
@@ -27,9 +27,11 @@ fn default_config_not_found() -> Result<(), Box<dyn Error>> {
 
 #[test]
 fn custom_config_not_found() -> Result<(), Box<dyn Error>> {
-    let mut cmd = Command::cargo_bin(crate_name!())?;
-    cmd.arg("google.com").arg("-c").arg("file/doesnt/exist");
-    cmd.assert()
+    app()
+        .arg("google.com")
+        .arg("-c")
+        .arg("file/doesnt/exist")
+        .assert()
         .failure()
         .stderr(predicate::str::contains("Configuration file is not found"));
     Ok(())
@@ -54,9 +56,11 @@ name = "Quad9"
     let (temp_dir, config) = setup_config()?;
     config.write_str(content)?;
 
-    let mut cmd = Command::cargo_bin(crate_name!())?;
-    cmd.arg("google.com").arg("-c").arg(config.to_path_buf());
-    cmd.assert()
+    app()
+        .arg("google.com")
+        .arg("-c")
+        .arg(config.to_path_buf())
+        .assert()
         .failure()
         .stderr(predicate::str::contains("missing field `name`"));
 
@@ -66,19 +70,24 @@ name = "Quad9"
 
 #[test]
 fn rtype_invalid() -> Result<(), Box<dyn Error>> {
-    let mut cmd = Command::cargo_bin("digs")?;
-    cmd.arg("google.com").arg("FOO");
-    cmd.assert().failure().stderr(predicate::str::contains(
-        r#"invalid value 'FOO' for '[RTYPE]'"#,
-    ));
+    app()
+        .arg("google.com")
+        .arg("FOO")
+        .assert()
+        .failure()
+        .stderr(predicate::str::contains(
+            r#"invalid value 'FOO' for '[RTYPE]'"#,
+        ));
     Ok(())
 }
 
 #[test]
 fn rtype_too_many() -> Result<(), Box<dyn Error>> {
-    let mut cmd = Command::cargo_bin(crate_name!())?;
-    cmd.arg("google.com").arg("A").arg("MX");
-    cmd.assert()
+    app()
+        .arg("google.com")
+        .arg("A")
+        .arg("MX")
+        .assert()
         .failure()
         .stderr(predicate::str::contains("unexpected argument 'MX' found"));
     Ok(())
@@ -95,9 +104,11 @@ name = "Google"
     let (temp_dir, config) = setup_config()?;
     config.write_str(content)?;
 
-    let mut cmd = Command::cargo_bin(crate_name!())?;
-    cmd.arg("google.com").arg("-c").arg(config.to_path_buf());
-    cmd.assert()
+    app()
+        .arg("google.com")
+        .arg("-c")
+        .arg(config.to_path_buf())
+        .assert()
         .failure()
         .stderr(predicate::str::contains("invalid socket address syntax"));
 
@@ -107,9 +118,9 @@ name = "Google"
 
 #[test]
 fn domain_invalid() -> Result<(), Box<dyn Error>> {
-    let mut cmd = Command::cargo_bin(crate_name!())?;
-    cmd.arg("example");
-    cmd.assert()
+    app()
+        .arg("example")
+        .assert()
         .failure()
         .stderr(predicate::str::contains(r#"example isn't a valid domain"#));
     Ok(())
@@ -120,12 +131,12 @@ fn query() -> Result<(), Box<dyn Error>> {
     let (temp_dir, config) = setup_config()?;
     config.write_str(&config_base())?;
 
-    let mut cmd = Command::cargo_bin(crate_name!())?;
-    cmd.arg("google.com")
+    app()
+        .arg("google.com")
         .arg("A")
         .arg("-c")
-        .arg(config.to_path_buf());
-    cmd.assert()
+        .arg(config.to_path_buf())
+        .assert()
         .success()
         .stdout(predicate::str::contains("google.com"));
 
@@ -139,9 +150,11 @@ fn query_without_rtype() -> Result<(), Box<dyn Error>> {
     let (temp_dir, config) = setup_config()?;
     config.write_str(&config_base())?;
 
-    let mut cmd = Command::cargo_bin(crate_name!())?;
-    cmd.arg("google.com").arg("-c").arg(config.to_path_buf());
-    cmd.assert()
+    app()
+        .arg("google.com")
+        .arg("-c")
+        .arg(config.to_path_buf())
+        .assert()
         .success()
         .stdout(predicate::str::contains("google.com"));
 
@@ -166,4 +179,9 @@ address = "9.9.9.9:53"
 name = "Quad9"
 "#;
     content.to_string()
+}
+
+/// App command, bin resolved once.
+fn app() -> Command {
+    Command::cargo_bin(pkg_name!()).unwrap()
 }
