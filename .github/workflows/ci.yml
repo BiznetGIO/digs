@@ -6,22 +6,26 @@ permissions: {}
 jobs:
   code_quality:
     name: Code Quality
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     permissions:
       contents: read
     steps:
       - name: Checkout source code
-        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
 
-      - uses: jdx/mise-action@e6a8b3978addb5a52f2b4cd9d91eafa7f0ab959d # v4.2.0
+      - uses: actions-rust-lang/setup-rust-toolchain@a188e68d0fd2bd36ad51dccb2b07ba6e75105f30 # v2.0.1
+        with:
+          components: clippy, rustfmt
+
+      - uses: jdx/mise-action@236a21c3b91f5db6d4e174b348674a0f0caac06d # v5.2.9
         with:
           install: false
           cache: true
 
       # Install required tools
-      - uses: cargo-bins/cargo-binstall@732870f031d2fb36309d0deaf36abcc704a7be65 # v1.20.1
+      - uses: cargo-bins/cargo-binstall@5885714d0a40a14b2535c6ffc051fd8e49aa9665 # v1.27.0
       - run: mise install cargo:dprint cargo:typos-cli #  via binstall
 
       - name: Quality Check
@@ -41,20 +45,20 @@ jobs:
       matrix:
         # prettier-ignore
         include:
-          - { build: linux-gnu, os: ubuntu-22.04, target: x86_64-unknown-linux-gnu }
-          - { build: linux-musl, os: ubuntu-22.04, target: x86_64-unknown-linux-musl }
-          - { build: win-gnu, os: windows-2022, target: x86_64-pc-windows-gnu }
-          - { build: win-msvc, os: windows-2022, target: x86_64-pc-windows-msvc }
-          - { build: win32-msvc, os: windows-2022, target: i686-pc-windows-msvc }
-          - { build: macos, os: macos-15-intel, target: x86_64-apple-darwin }
+          - { build: linux-gnu, os: ubuntu-26.04, target: x86_64-unknown-linux-gnu }
+          - { build: linux-musl, os: ubuntu-26.04, target: x86_64-unknown-linux-musl }
+          - { build: win-gnu, os: windows-2025, target: x86_64-pc-windows-gnu }
+          - { build: win-msvc, os: windows-2025, target: x86_64-pc-windows-msvc }
+          - { build: win32-msvc, os: windows-2025, target: i686-pc-windows-msvc }
+          - { build: macos, os: macos-26-intel, target: x86_64-apple-darwin }
 
     steps:
       - name: Checkout source code
-        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
 
-      - uses: actions-rust-lang/setup-rust-toolchain@46268bd060767258de96ed93c1251119784f2ab6 # v1.16.1
+      - uses: actions-rust-lang/setup-rust-toolchain@a188e68d0fd2bd36ad51dccb2b07ba6e75105f30 # v2.0.1
         with:
           target: ${{ matrix.target }}
 

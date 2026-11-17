@@ -2,7 +2,7 @@
 "cargo:dprint" = "latest"
 "cargo:git-cliff" = "latest"
 "cargo:bacon" = "latest"
-"cargo:typos-cli" = "latest"
+"cargo:typos-cli" = "1.52.2"
 "cargo:cargo-nextest" = "latest"
 "cargo:cargo-edit" = "latest"
 "cargo:cargo-outdated" = "latest"
@@ -10,6 +10,7 @@
 "cargo:cargo-audit" = "latest"
 "cargo:cargo-release" = "latest"
 "shellcheck" = "latest"
+"npm:actions-up" = "latest"
 
 [tasks.setup]
 hide = true
@@ -112,7 +113,7 @@ hide = true
 description = "Dependency analysis"
 run = [
   # CI
-  "pnpx actions-up",
+  "actions-up",
   "actionlint",
   "zizmor .github/workflows/*",
 

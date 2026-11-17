@@ -4,10 +4,10 @@
 dig many at once.
 
 <a href="https://github.com/BiznetGIO/digs/actions/workflows/ci.yml">
-<img src="https://github.com/BiznetGIO/digs/actions/workflows/ci.yml/badge.svg">
+  <img src="https://github.com/BiznetGIO/digs/actions/workflows/ci.yml/badge.svg">
 </a>
 <a href="https://crates.io/crates/digs">
-<img src="https://img.shields.io/crates/v/digs.svg">
+  <img src="https://img.shields.io/crates/v/digs.svg">
 </a>
 
 <p></p>
