@@ -11,20 +11,20 @@ permissions: {}
 jobs:
   changelog:
     name: Generate Changelog
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     permissions:
       contents: read
     outputs:
       release_body: ${{ steps.git-cliff.outputs.content }}
     steps:
       - name: Checkout
-        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           fetch-depth: 0 # required for git-cliff
           persist-credentials: false
 
       - name: Generate a changelog
-        uses: orhun/git-cliff-action@f50e11560dce63f7c33227798f90b924471a88b5 # v4.8.0
+        uses: orhun/git-cliff-action@a9a95522b26fe6403f7bb24031f21fb573d0f5ff # v4.9.1
         id: git-cliff
         with:
           config: .cliff.toml
@@ -35,14 +35,14 @@ jobs:
   # release is created, which avoids the 6-way `gh release create` collision.
   create-release:
     name: Create Release
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     needs: changelog
     permissions:
       contents: write
     environment: release
     steps:
       - name: Checkout source code
-        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
 
@@ -79,16 +79,16 @@ jobs:
       matrix:
         # prettier-ignore
         include:
-          - { build: linux-gnu, os: ubuntu-22.04, target: x86_64-unknown-linux-gnu }
-          - { build: linux-musl, os: ubuntu-22.04, target: x86_64-unknown-linux-musl }
-          - { build: win-gnu, os: windows-2022, target: x86_64-pc-windows-gnu }
-          - { build: win-msvc, os: windows-2022, target: x86_64-pc-windows-msvc }
-          - { build: win32-msvc, os: windows-2022, target: i686-pc-windows-msvc }
-          - { build: macos, os: macos-15-intel, target: x86_64-apple-darwin }
+          - { build: linux-gnu, os: ubuntu-26.04, target: x86_64-unknown-linux-gnu }
+          - { build: linux-musl, os: ubuntu-26.04, target: x86_64-unknown-linux-musl }
+          - { build: win-gnu, os: windows-2025, target: x86_64-pc-windows-gnu }
+          - { build: win-msvc, os: windows-2025, target: x86_64-pc-windows-msvc }
+          - { build: win32-msvc, os: windows-2025, target: i686-pc-windows-msvc }
+          - { build: macos, os: macos-26-intel, target: x86_64-apple-darwin }
 
     steps:
       - name: Checkout source code
-        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
 
@@ -107,7 +107,7 @@ jobs:
               --allow-unauthenticated musl-tools
           fi
 
-      - uses: actions-rust-lang/setup-rust-toolchain@46268bd060767258de96ed93c1251119784f2ab6 # v1.16.1
+      - uses: actions-rust-lang/setup-rust-toolchain@a188e68d0fd2bd36ad51dccb2b07ba6e75105f30 # v2.0.1
         with:
           target: ${{ matrix.target }}
           cache: false

@@ -6,7 +6,7 @@ You can enable logging by using `DIGS_DEBUG=trace` as an environment variable.
 
 ## Commit Message Format
 
-This repo is using [Agular's commit message format][commit-message]
+This repo is using [Angular's commit message format][commit-message]
 
 ## Release Checklist
 

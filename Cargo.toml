@@ -8,26 +8,26 @@ exclude = ["/README.md"]
 keywords = ["cli", "dns", "dig"]
 license = "MIT"
 repository = "https://github.com/BiznetGIO/digs"
-rust-version = "1.96.0"
+rust-version = "1.100.0"
 description = "digs many at once"
 
 [profile.release]
-opt-level = 'z' # Optimize for size.
+opt-level = "z" # Optimize for size.
 codegen-units = 1
 lto = true
-panic = 'abort'
+panic = "abort"
 
 [dependencies]
 hickory-client = "0.25.2"
 
-clap = { version = "4.6.1", features = ["suggestions", "color", "cargo", "derive"] }
-log = "0.4.33"
+clap = { version = "4.6.8", features = ["suggestions", "color", "cargo", "derive"] }
+log = "0.4.35"
 miette = { version = "7.6.0", features = ["fancy"] }
-owo-colors = "4.3.0"
-serde = { version = "1.0.228", features = ["derive"] }
-thiserror = "2.0.18"
-tokio = "1.52.3"
-toml = "1.1.2"
+owo-colors = "4.4.0"
+serde = { version = "1.0.229", features = ["derive"] }
+thiserror = "2.0.21"
+tokio = "1.54.1"
+toml = "1.2.1"
 
 [dev-dependencies]
 assert_cmd = "2.2.2"

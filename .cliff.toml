@@ -68,7 +68,7 @@ trim = true
 # An array of regex based postprocessors to modify the changelog.
 postprocessors = [
   # Replace the placeholder `<REPO>` with a URL.
-  { pattern = '<REPO>', replace = "https://github.com/BiznetGIO/digs" }, # replace repository URL
+  { pattern = "<REPO>", replace = "https://github.com/BiznetGIO/digs" }, # replace repository URL
 ]
 
 [git]
